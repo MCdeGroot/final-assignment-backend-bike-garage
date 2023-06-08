@@ -1,0 +1,1 @@
+INSERT INTO bikes (frame_number, brand) VALUES (3576455, 'Giant');
