@@ -1,5 +1,4 @@
-package com.example.bikegarage.dto.input;
-
+package com.example.bikegarage.dto.output;
 
 import com.example.bikegarage.model.BikePart;
 import com.example.bikegarage.model.BikeType;
@@ -8,7 +7,7 @@ import jakarta.persistence.Enumerated;
 
 import java.util.Set;
 
-public class BikeInputDto {
+public class BikeOutputDto {
     public Long frameNumber;
     public String brand;
     public String model;
@@ -17,6 +16,4 @@ public class BikeInputDto {
     @Enumerated(EnumType.STRING)
     public BikeType biketype;
     public Set<BikePart> bikeParts;
-
-
 }

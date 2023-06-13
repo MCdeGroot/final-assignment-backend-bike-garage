@@ -1,5 +1,6 @@
 package com.example.bikegarage.service;
 
+import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.repository.BikeRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +12,7 @@ public class BikeService {
         this.bikeRepository = bikeRepository;
     }
 
-    public BikeOutputDto
+//    public BikeOutputDto getBikeById (Long id){
+//
+//    }
 }

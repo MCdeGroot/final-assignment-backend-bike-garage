@@ -20,6 +20,8 @@ import java.util.Set;
 public class Bike {
 
     @Id
+    @GeneratedValue
+    private Long id;
     private Long frameNumber;
     private String brand;
     private String model;
