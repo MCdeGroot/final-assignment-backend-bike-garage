@@ -1,4 +1,42 @@
 package com.example.bikegarage.model;
 
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+@Getter
+@Setter
+// Adding constructors, check later if these are the constructors I need.
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "bikes")
 public class Bike {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    private Long frameNumber;
+    private String brand;
+    private String model;
+    private String name;
+    private Long totalDistanceDriven;
+    @Enumerated(EnumType.STRING)
+    private BikeType bikeType;
+    @OneToMany (mappedBy = "bike")
+    private Set<BikePart> bikeParts;
+    @OneToMany (mappedBy = "bike")
+    private ArrayList<Ride> rides;
+    @ManyToOne
+    private User user;
+
+
+
+// private ?? imageBike;
 }
