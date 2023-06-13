@@ -1,8 +1,12 @@
 package com.example.bikegarage.controller;
 
-import com.example.bikegarage.model.Bike;
-import com.example.bikegarage.repository.BikeRepository;
+import com.example.bikegarage.dto.input.BikeInputDto;
+import com.example.bikegarage.dto.output.BikeOutputDto;
+import com.example.bikegarage.service.BikeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -12,14 +16,40 @@ import java.net.URI;
 @RequestMapping("/bikes")
 public class BikeController {
 
-    private final BikeRepository bikeRepository;
-    public BikeController(BikeRepository bikeRepository) {
-        this.bikeRepository = bikeRepository;
+    private final BikeService bikeService;
+    public BikeController(BikeService bikeService) {
+        this.bikeService = bikeService;
     }
-    @GetMapping
-    public ResponseEntity<Iterable<Bike>> getAllBikes(){
-        return ResponseEntity.ok(bikeRepository.findAll());
+
+    //het liefst wil ik hem met id of framenumber; moet ik hier aparte mappings voor maken of kan dit in één?
+    //Of moeten we dit in de frontend regelen?
+    @GetMapping("/{id}")
+    public ResponseEntity<BikeOutputDto> getBikeById(@PathVariable Long id){
+        return new ResponseEntity<>(bikeService.getBikeById(id), HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Object> createBike(@RequestBody BikeInputDto bikeInputDto, BindingResult br){
+        if (br.hasFieldErrors()) {
+            StringBuilder sb = new StringBuilder();
+            for (FieldError fe : br.getFieldErrors()) {
+                sb.append(fe.getField() + ": ");
+                sb.append(fe.getDefaultMessage());
+                sb.append("\n");
+            }
+            return ResponseEntity.badRequest().body(sb.toString());
+        } else {
+            BikeOutputDto bikeOutputDto = bikeService.createBike(bikeInputDto);
+            //hiermee creeer je het pad waarin het object wordt opgeslagen.
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + bikeOutputDto).toUriString());
+            return ResponseEntity.created(uri).body(bikeOutputDto);
+        }
+    }
+
+//    @GetMapping
+//    public ResponseEntity<Iterable<Bike>> getAllBikes(){
+//        return ResponseEntity.ok(bikeRepository.findAll());
+//    }
 //    @PostMapping
 //    public ResponseEntity<Bike> addBike(@RequestBody Bike bike){
 //        bikeRepository.save(bike);

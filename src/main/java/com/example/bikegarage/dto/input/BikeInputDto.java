@@ -1,12 +1,14 @@
 package com.example.bikegarage.dto.input;
 
 
-import com.example.bikegarage.model.BikePart;
+
 import com.example.bikegarage.model.BikeType;
+
+import com.example.bikegarage.model.User;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import java.util.Set;
+
 
 public class BikeInputDto {
     public Long frameNumber;
@@ -16,7 +18,9 @@ public class BikeInputDto {
     public Long totalDistanceDriven;
     @Enumerated(EnumType.STRING)
     public BikeType biketype;
-    public Set<BikePart> bikeParts;
 
-
+    // ik vraag mij dus af of dit nodig is voor een Input DTO. Vragen aan PAUL
+   // public Set<BikePart> bikeParts;
+   // public ArrayList<Ride> rides;
+    public User user;
 }
