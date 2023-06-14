@@ -1,6 +1,7 @@
 package com.example.bikegarage.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -30,9 +32,11 @@ public class Bike {
     @Enumerated(EnumType.STRING)
     private BikeType bikeType;
     @OneToMany (mappedBy = "bike")
+    @JsonIgnore
     private Set<BikePart> bikeParts;
     @OneToMany (mappedBy = "bike")
-    private ArrayList<Ride> rides;
+    @JsonIgnore
+    private List<Ride> rides;
     @ManyToOne
     private User user;
 
