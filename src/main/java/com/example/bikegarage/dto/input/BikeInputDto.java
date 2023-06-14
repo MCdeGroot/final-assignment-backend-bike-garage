@@ -15,7 +15,6 @@ public class BikeInputDto {
     public String brand;
     public String model;
     public String name;
-    public Long totalDistanceDriven;
     @Enumerated(EnumType.STRING)
     public BikeType bikeType;
 

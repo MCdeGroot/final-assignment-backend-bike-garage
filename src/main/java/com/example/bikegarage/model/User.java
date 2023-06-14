@@ -33,12 +33,4 @@ public class User {
     private ArrayList<Ride> rides;
 
 
-
-
-
-
-
-
-
-
 }

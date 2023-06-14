@@ -17,7 +17,7 @@ public class BikeOutputDto {
     public String brand;
     public String model;
     public String name;
-    public Long totalDistanceDriven;
+    public Double totalDistanceDriven;
     @Enumerated(EnumType.STRING)
     public BikeType bikeType;
     public Set<BikePart> bikeParts;

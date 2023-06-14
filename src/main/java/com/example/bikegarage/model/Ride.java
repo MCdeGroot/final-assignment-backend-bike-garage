@@ -21,7 +21,7 @@ public class Ride {
     private Long id;
     private String titleRide;
     private String subTitleRide;
-    private Long distance;
+    private Double distance;
     private Date date;
 
     //dit is mij nog niet helemaal duidelijk iedere ride heeft maar 1 bike.
