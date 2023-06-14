@@ -52,6 +52,22 @@ public class BikeController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateBike(@PathVariable Long id, @RequestBody BikeInputDto newBikeInputDto, BindingResult br ){
+        if (br.hasFieldErrors()) {
+            StringBuilder sb = new StringBuilder();
+            for (FieldError fe : br.getFieldErrors()) {
+                sb.append(fe.getField() + ": ");
+                sb.append(fe.getDefaultMessage());
+                sb.append("\n");
+            }
+            return ResponseEntity.badRequest().body(sb.toString());
+        }
+        BikeOutputDto bikeOutputDto = bikeService.updateBike(id, newBikeInputDto);
+        return new ResponseEntity<>(bikeOutputDto, HttpStatus.ACCEPTED);
+    }
+
+
 //    @GetMapping
 //    public ResponseEntity<Iterable<Bike>> getAllBikes(){
 //        return ResponseEntity.ok(bikeRepository.findAll());

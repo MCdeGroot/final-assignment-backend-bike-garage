@@ -87,7 +87,7 @@ public class BikeService {
         bike.setModel(bikeInputDto.model);
         bike.setName(bikeInputDto.name);
         bike.setTotalDistanceDriven(bikeInputDto.totalDistanceDriven);// vraag me af of ik dit wel moet doen. Dit moet in principe berekend worden.
-        bike.setBikeType(bikeInputDto.biketype);
+        bike.setBikeType(bikeInputDto.bikeType);
         bike.setUser(bikeInputDto.user);
 
         return bike;
