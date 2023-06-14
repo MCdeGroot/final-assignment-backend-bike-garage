@@ -1,1 +1,1 @@
-INSERT INTO bikes (id, frame_number, brand, model, name, bike_type) VALUES (100, 123, 'Giant', 'TCR Advanced PRO', 'RoadFav', 'ROAD');
+INSERT INTO bikes (id, frame_number, brand, model, name, total_distance_driven, bike_type) VALUES (100, 123, 'Giant', 'TCR Advanced PRO', 'RoadFav',0.0 ,'ROAD');

@@ -1,22 +1,40 @@
 package com.example.bikegarage.service;
 
 import com.example.bikegarage.dto.input.RideInputDto;
+import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
+import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.repository.BikeRepository;
 import com.example.bikegarage.repository.RideRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class RideService {
     private final RideRepository rideRepository;
     private final BikeRepository bikeRepository;
+    public List<RideOutputDto> getAllRides() throws RecordNotFoundException{
+        List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
+        List<Ride> rides = rideRepository.findAll();
+        if (rides.isEmpty()){
+            throw new RecordNotFoundException("I'm sorry but it looks like you don't have any rides ridden yet");
+        }
+        for (Ride ride:rides
+        ) {allRidesOutputDtos.add(transferRideModelToRideOutputDto(ride));
+        }
+        return allRidesOutputDtos;
+    }
 
     public RideService(RideRepository rideRepository, BikeRepository bikeRepository) {
         this.rideRepository = rideRepository;
         this.bikeRepository = bikeRepository;
     }
+
+
 
     public RideOutputDto createRide(RideInputDto rideInputDto, Long bikeId){
         Ride ride = transferRideInputDtoToRide(rideInputDto);

@@ -4,11 +4,13 @@ import com.example.bikegarage.dto.input.RideInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.service.RideService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rides")
@@ -18,6 +20,11 @@ public class RideController {
 
     public RideController(RideService rideService) {
         this.rideService = rideService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<RideOutputDto>> getAllRides(){
+        return new ResponseEntity<>(rideService.getAllRides(), HttpStatus.OK);
     }
 
     @PostMapping
