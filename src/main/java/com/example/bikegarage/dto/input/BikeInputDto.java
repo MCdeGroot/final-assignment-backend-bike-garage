@@ -17,7 +17,7 @@ public class BikeInputDto {
     public String name;
     public Long totalDistanceDriven;
     @Enumerated(EnumType.STRING)
-    public BikeType biketype;
+    public BikeType bikeType;
 
     // ik vraag mij dus af of dit nodig is voor een Input DTO. Vragen aan PAUL
    // public Set<BikePart> bikeParts;

@@ -7,6 +7,9 @@ import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.repository.BikeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class BikeService {
@@ -21,10 +24,35 @@ public class BikeService {
         return transferBikeModelToBikeOutputDto(bike);
     }
 
+    public List<BikeOutputDto> getAllBikes() throws RecordNotFoundException{
+        List<BikeOutputDto> allBikesOutputDtos = new ArrayList<>();
+        List<Bike> bikes = bikeRepository.findAll();
+        if (bikes.isEmpty()){
+            throw new RecordNotFoundException("I'm sorry but it looks like you don't have any bikes in your possession");
+        }
+        for (Bike bike:bikes
+             ) {allBikesOutputDtos.add(transferBikeModelToBikeOutputDto(bike));
+        }
+        return allBikesOutputDtos;
+    }
+
     public BikeOutputDto createBike(BikeInputDto bikeInputDto){
         Bike bike = transferBikeInputDtoToBike(bikeInputDto);
         bikeRepository.save(bike);
         return transferBikeModelToBikeOutputDto(bike);
+    }
+
+    public BikeOutputDto updateBike(Long id, BikeInputDto bikeInputDto) throws RecordNotFoundException{
+        Bike bike = bikeRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Bike with id-number" + id + " cannot be found"));
+        Bike bikeUpdate = updateBikeInputDtoToBike(bikeInputDto, bike);
+        bikeRepository.save(bikeUpdate);
+        return transferBikeModelToBikeOutputDto(bikeUpdate);
+    }
+
+    public String deleteBike(Long id) throws RecordNotFoundException{
+        Bike bike = bikeRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Bike with id-number" + id + " cannot be found"));
+        bikeRepository.deleteById(id);
+        return "Well well I hope you know what you're doing, because you just removed " + bike.getName() + "!";
     }
 
 
@@ -64,6 +92,33 @@ public class BikeService {
 
         return bike;
     }
+
+    public Bike updateBikeInputDtoToBike(BikeInputDto bikeInputDto, Bike bike){
+        if (bikeInputDto.frameNumber != null) {
+            bike.setFrameNumber(bikeInputDto.frameNumber);
+        }
+        if (bikeInputDto.brand != null){
+            bike.setBrand(bikeInputDto.brand);
+        }
+        if (bikeInputDto.model != null){
+            bike.setModel(bikeInputDto.model);
+        }
+        if (bikeInputDto.name != null){
+            bike.setName(bikeInputDto.name);
+        }
+        if (bikeInputDto.totalDistanceDriven != null){
+            bike.setTotalDistanceDriven(bikeInputDto.totalDistanceDriven);
+        }
+        if (bikeInputDto.bikeType != null){
+            bike.setBikeType(bikeInputDto.bikeType);
+        }
+        if (bikeInputDto.user != null){
+            bike.setUser(bikeInputDto.user);
+        }
+
+        return bike;
+    }
+
 }
 
 

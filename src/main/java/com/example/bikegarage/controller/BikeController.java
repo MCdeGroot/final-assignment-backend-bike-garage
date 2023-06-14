@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bikes")
@@ -28,6 +29,11 @@ public class BikeController {
         return new ResponseEntity<>(bikeService.getBikeById(id), HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<List<BikeOutputDto>> getAllBikes(){
+        return new ResponseEntity<>(bikeService.getAllBikes(),HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Object> createBike(@RequestBody BikeInputDto bikeInputDto, BindingResult br){
         if (br.hasFieldErrors()) {
@@ -40,7 +46,7 @@ public class BikeController {
             return ResponseEntity.badRequest().body(sb.toString());
         } else {
             BikeOutputDto bikeOutputDto = bikeService.createBike(bikeInputDto);
-            //hiermee creeer je het pad waarin het object wordt opgeslagen.
+            //hiermee creeer je het pad waarin het object wordt opgeslagen. maar snap niet hoe dit werk!!!!
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + bikeOutputDto).toUriString());
             return ResponseEntity.created(uri).body(bikeOutputDto);
         }
