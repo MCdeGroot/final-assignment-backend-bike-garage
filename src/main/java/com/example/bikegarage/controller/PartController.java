@@ -64,4 +64,12 @@ public class PartController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/"+ partOutputDto).toUriString());
         return ResponseEntity.created(uri).body(partOutputDto);
     }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> deletePartById(@PathVariable Long id) {
+            partService.deletePart(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
 }
