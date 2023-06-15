@@ -23,5 +23,4 @@ public class BikeOutputDto {
     public Set<BikePart> bikeParts;
     public List<Ride> rides;
     public User user;
-    public Integer numberOfRides;
 }

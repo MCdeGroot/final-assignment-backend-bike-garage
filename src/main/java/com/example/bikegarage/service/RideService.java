@@ -1,5 +1,6 @@
 package com.example.bikegarage.service;
 
+import com.example.bikegarage.dto.input.BikeInputDto;
 import com.example.bikegarage.dto.input.RideInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
@@ -17,6 +18,13 @@ import java.util.List;
 public class RideService {
     private final RideRepository rideRepository;
     private final BikeRepository bikeRepository;
+
+
+    public RideService(RideRepository rideRepository, BikeRepository bikeRepository) {
+        this.rideRepository = rideRepository;
+        this.bikeRepository = bikeRepository;
+    }
+
     public List<RideOutputDto> getAllRides() throws RecordNotFoundException{
         List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
         List<Ride> rides = rideRepository.findAll();
@@ -28,17 +36,23 @@ public class RideService {
         }
         return allRidesOutputDtos;
     }
-
-    public RideService(RideRepository rideRepository, BikeRepository bikeRepository) {
-        this.rideRepository = rideRepository;
-        this.bikeRepository = bikeRepository;
+    public List<RideOutputDto> getAllRidesGreaterThanEqual(Double distance) throws RecordNotFoundException{
+        List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
+        List<Ride> rides = rideRepository.findByDistanceGreaterThanEqual(distance);
+        if (rides.isEmpty()){
+            throw new RecordNotFoundException("I'm sorry but it looks like you don't have any GranFondo's yet");
+        }
+        for (Ride ride:rides
+        ) {allRidesOutputDtos.add(transferRideModelToRideOutputDto(ride));
+        }
+        return allRidesOutputDtos;
     }
 
 
-
+// Create ride, user always must select a bike that he drove during the ride. Can't create a ride without a bike
     public RideOutputDto createRide(RideInputDto rideInputDto, Long bikeId){
         Ride ride = transferRideInputDtoToRide(rideInputDto);
-        Bike bike = bikeRepository.findById(bikeId).orElseThrow();
+        Bike bike = bikeRepository.findById(bikeId).orElseThrow(()-> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
         ride.setBike(bike);
         bike.updateTotalDistanceDriven(bike, ride);
 
@@ -47,10 +61,24 @@ public class RideService {
         return transferRideModelToRideOutputDto(ride);
     }
 
+    public RideOutputDto updateRide(Long id, RideInputDto rideInputDto) throws RecordNotFoundException{
+        Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + id + " cannot be found"));
+        Ride rideUpdate = updateRideInputDtoToRide(rideInputDto, ride);
+        rideRepository.save(rideUpdate);
+        return transferRideModelToRideOutputDto(rideUpdate);
+    }
+
+    public String deleteRide(Long id) throws RecordNotFoundException{
+        Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Rike with id-number" + id + " cannot be found"));
+        rideRepository.deleteById(id);
+        return "Well well I hope you know what you're doing, because you just removed " + ride.getTitleRide() + "!";
+    }
+
 
 
     public RideOutputDto transferRideModelToRideOutputDto(Ride ride){
         RideOutputDto rideOutputDto = new RideOutputDto();
+        rideOutputDto.id = ride.getId();
         rideOutputDto.titleRide = ride.getTitleRide();
         rideOutputDto.subTitleRide = ride.getSubTitleRide();
         rideOutputDto.distance = ride.getDistance();

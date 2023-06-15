@@ -6,6 +6,8 @@ import com.example.bikegarage.model.User;
 import java.util.Date;
 
 public class RideOutputDto {
+    public Long id;
+
     public String titleRide;
     public String subTitleRide;
     public Double distance;

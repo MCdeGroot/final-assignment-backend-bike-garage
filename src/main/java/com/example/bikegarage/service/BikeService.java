@@ -20,7 +20,7 @@ public class BikeService {
     }
 
     public BikeOutputDto getBikeById(Long id) throws RecordNotFoundException {
-        Bike bike = bikeRepository.findById(id).orElseThrow(()-> new RecordNotFoundException("The bike with "));
+        Bike bike = bikeRepository.findById(id).orElseThrow(()-> new RecordNotFoundException("Bike with id-number " + id + " cannot be found"));
         return transferBikeModelToBikeOutputDto(bike);
     }
 
@@ -43,7 +43,7 @@ public class BikeService {
     }
 
     public BikeOutputDto updateBike(Long id, BikeInputDto bikeInputDto) throws RecordNotFoundException{
-        Bike bike = bikeRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Bike with id-number" + id + " cannot be found"));
+        Bike bike = bikeRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + id + " cannot be found"));
         Bike bikeUpdate = updateBikeInputDtoToBike(bikeInputDto, bike);
         bikeRepository.save(bikeUpdate);
         return transferBikeModelToBikeOutputDto(bikeUpdate);
