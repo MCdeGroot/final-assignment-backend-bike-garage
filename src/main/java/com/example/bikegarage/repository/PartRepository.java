@@ -9,5 +9,5 @@ import java.util.Set;
 
 public interface PartRepository extends JpaRepository<Part, Long> {
 
-    List<Part> findAllByBike(Bike bike);
+    List<Part> findByBike(Bike bike);
 }
