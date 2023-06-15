@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +27,7 @@ public class Bike {
     private String brand;
     private String model;
     private String name;
-    private Long totalDistanceDriven;
+    private Double totalDistanceDriven = 0.0;
     @Enumerated(EnumType.STRING)
     private BikeType bikeType;
     @OneToMany (mappedBy = "bike")
@@ -40,7 +39,14 @@ public class Bike {
     @ManyToOne
     private User user;
 
-
-
 // private ?? imageBike;
+
+    //Methods
+
+    public void updateTotalDistanceDriven(Bike bike, Ride ride) {
+        Double distance = ride.getDistance();
+        Double currentTotalDistanceDriven = bike.getTotalDistanceDriven();
+        Double newTotalDistanceDriven = currentTotalDistanceDriven + distance;
+        bike.setTotalDistanceDriven(newTotalDistanceDriven);
+    }
 }

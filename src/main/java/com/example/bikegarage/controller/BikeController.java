@@ -66,7 +66,7 @@ public class BikeController {
         BikeOutputDto bikeOutputDto = bikeService.updateBike(id, newBikeInputDto);
         return new ResponseEntity<>(bikeOutputDto, HttpStatus.ACCEPTED);
     }
-    @DeleteMapping("/owner/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<HttpStatus> deleteBikeById (@PathVariable Long id){
         bikeService.deleteBike(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
