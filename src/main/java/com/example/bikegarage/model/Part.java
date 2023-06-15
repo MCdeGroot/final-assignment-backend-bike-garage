@@ -31,6 +31,15 @@ public class Part {
 
     //methods
 
+    //Methods
+
+    public void updateCurrentDistanceDriven(Part part, Ride ride) {
+        Double distance = ride.getDistance();
+        Double currentDistanceDriven = part.getCurrentDistanceDriven();
+        Double newTotalDistanceDriven = currentDistanceDriven + distance;
+        part.setCurrentDistanceDriven(newTotalDistanceDriven);
+    }
+
 }
 
 

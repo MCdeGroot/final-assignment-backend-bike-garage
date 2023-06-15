@@ -1,6 +1,7 @@
 package com.example.bikegarage.service;
 
 import com.example.bikegarage.dto.input.PartInputDto;
+import com.example.bikegarage.dto.input.RideInputDto;
 import com.example.bikegarage.dto.output.PartOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PartService {
@@ -51,16 +54,30 @@ public class PartService {
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
         List<Ride> ridesAfterDate = rideRepository.findAllByDateAfterOrDateEquals(part.getInstallationDate(), LocalDateTime.now());
         Double currentDistance = 0.0;
-            for (Ride ride : ridesAfterDate){
-                currentDistance += ride.getDistance();
+        for (Ride ride : ridesAfterDate) {
+            currentDistance += ride.getDistance();
         }
         part.setBike(bike);
-            part.setCurrentDistanceDriven(currentDistance);
+        part.setCurrentDistanceDriven(currentDistance);
         partRepository.save(part);
         return transferPartModelToPartOutputDto(part);
     }
 
-   // List<Ride> rides = rideRepository.findAllByDateAfterOrDateEquals(part.getInstallationDate());
+    public PartOutputDto updateBikePart(Long id, PartInputDto partInputDto) throws RecordNotFoundException {
+        Part bikePart = partRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Bike part with id-number " + id + " cannot be found"));
+        Part bikePartUpdate = updatePartInputDtoToPart(partInputDto, bikePart);
+        List<Ride> ridesAfterDate = rideRepository.findAllByDateAfterOrDateEquals(bikePartUpdate.getInstallationDate(), LocalDateTime.now());
+        Double currentDistance = 0.0;
+        for (Ride ride : ridesAfterDate) {
+            currentDistance += ride.getDistance();
+        }
+        bikePartUpdate.setCurrentDistanceDriven(currentDistance);
+        partRepository.save(bikePartUpdate);
+        return transferPartModelToPartOutputDto(bikePartUpdate);
+    }
+
+
+    // List<Ride> rides = rideRepository.findAllByDateAfterOrDateEquals(part.getInstallationDate());
     public PartOutputDto transferPartModelToPartOutputDto(Part part) {
         PartOutputDto partOutputDto = new PartOutputDto();
         partOutputDto.id = part.getId();
@@ -85,6 +102,22 @@ public class PartService {
     }
 
     //Methods
+
+    public Part updatePartInputDtoToPart(PartInputDto partInputDto, Part part) {
+        if (partInputDto.name != null) {
+            part.setName(partInputDto.name);
+        }
+        if (partInputDto.partType != null) {
+            part.setPartType(partInputDto.partType);
+        }
+        if (partInputDto.maxDistance != null) {
+            part.setMaxDistance(partInputDto.maxDistance);
+        }
+        if (partInputDto.installationDate != null) {
+            part.setInstallationDate(partInputDto.installationDate);
+        }
+        return part;
+    }
 
 
 }
