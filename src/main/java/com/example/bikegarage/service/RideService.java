@@ -1,8 +1,7 @@
 package com.example.bikegarage.service;
 
-import com.example.bikegarage.dto.input.BikeInputDto;
+
 import com.example.bikegarage.dto.input.RideInputDto;
-import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
@@ -82,7 +81,7 @@ public class RideService {
         rideOutputDto.titleRide = ride.getTitleRide();
         rideOutputDto.subTitleRide = ride.getSubTitleRide();
         rideOutputDto.distance = ride.getDistance();
-        rideOutputDto.date=ride.getDate();
+        rideOutputDto.date = ride.getDate();
         rideOutputDto.bike=ride.getBike();
         rideOutputDto.user=ride.getUser();
 

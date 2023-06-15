@@ -1,6 +1,6 @@
 package com.example.bikegarage.dto.output;
 
-import com.example.bikegarage.model.BikePart;
+import com.example.bikegarage.model.Part;
 import com.example.bikegarage.model.BikeType;
 import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
@@ -20,7 +20,7 @@ public class BikeOutputDto {
     public Double totalDistanceDriven;
     @Enumerated(EnumType.STRING)
     public BikeType bikeType;
-    public Set<BikePart> bikeParts;
+    public Set<Part> bikeParts;
     public List<Ride> rides;
     public User user;
 }

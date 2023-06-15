@@ -5,6 +5,7 @@ import com.example.bikegarage.model.User;
 import jakarta.validation.constraints.*;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class RideInputDto {
@@ -17,7 +18,7 @@ public class RideInputDto {
     public Double distance;
     @NotNull
     @PastOrPresent(message = "The date can't be in the future")
-    public Date date;
+    public LocalDateTime date;
     @Lazy(false)
     public Bike bike;
 

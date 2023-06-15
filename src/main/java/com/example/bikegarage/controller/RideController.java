@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping("/rides")
 public class RideController {
     private final RideService rideService;
-
-
     public RideController(RideService rideService) {
         this.rideService = rideService;
     }

@@ -32,7 +32,7 @@ public class Bike {
     private BikeType bikeType;
     @OneToMany (mappedBy = "bike")
     @JsonIgnore
-    private Set<BikePart> bikeParts;
+    private Set<Part> bikeParts;
     @OneToMany (mappedBy = "bike")
     @JsonIgnore
     private List<Ride> rides;

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "bike_parts")
-public class BikePart {
+public class Part {
 
     @Id
     @GeneratedValue
@@ -22,9 +23,14 @@ public class BikePart {
     private String name;
     @Enumerated(EnumType.STRING)
     private PartType partType;
-    private Long currentDistanceDriven;
-    private Long maxDistance;
+    private Double currentDistanceDriven = 0.0;
+    private Double maxDistance;
     @ManyToOne
     private Bike bike;
+    private LocalDateTime installationDate;
+
+    //methods
 
 }
+
+
