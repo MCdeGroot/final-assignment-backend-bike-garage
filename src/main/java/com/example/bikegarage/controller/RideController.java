@@ -23,12 +23,12 @@ public class RideController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RideOutputDto>> getAllRides(){
-        return new ResponseEntity<>(rideService.getAllRides(), HttpStatus.OK);
-    }
-    @GetMapping("/km")
-    public ResponseEntity<List<RideOutputDto>> getAllRidesGreaterThanEqual(@RequestParam Double distance){
-        return new ResponseEntity<>(rideService.getAllRidesGreaterThanEqual(distance), HttpStatus.OK);
+    public ResponseEntity<List<RideOutputDto>> getAllRides(@RequestParam(required = false) Double distance) {
+        if (distance != null) {
+            return new ResponseEntity<>(rideService.getAllRidesGreaterThanEqual(distance), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(rideService.getAllRides(), HttpStatus.OK);
+        }
     }
 
 

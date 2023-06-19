@@ -43,10 +43,9 @@ public class Bike {
 
     //Methods
 
-    public void updateTotalDistanceDriven(Bike bike, Ride ride) {
+    public void updateTotalDistanceDriven(Ride ride) {
         Double distance = ride.getDistance();
-        Double currentTotalDistanceDriven = bike.getTotalDistanceDriven();
-        Double newTotalDistanceDriven = currentTotalDistanceDriven + distance;
-        bike.setTotalDistanceDriven(newTotalDistanceDriven);
+        Double newTotalDistanceDriven = getTotalDistanceDriven() + distance;
+        setTotalDistanceDriven(newTotalDistanceDriven);
     }
 }

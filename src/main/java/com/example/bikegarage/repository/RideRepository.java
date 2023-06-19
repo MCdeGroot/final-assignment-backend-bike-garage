@@ -10,5 +10,5 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 
         List<Ride> findByDistanceGreaterThanEqual(Double distance);
 
-        List<Ride> findAllByDateAfterOrDateEquals(LocalDateTime dateStartTime, LocalDateTime dateEndTime);
+        List<Ride> findByDateAfterOrDateEquals(LocalDateTime dateStartTime, LocalDateTime dateEndTime);
         }

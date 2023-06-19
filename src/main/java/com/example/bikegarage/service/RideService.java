@@ -64,17 +64,18 @@ public class RideService {
         Ride ride = transferRideInputDtoToRide(rideInputDto);
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
         ride.setBike(bike);
-        bike.updateTotalDistanceDriven(bike, ride);
+        bike.updateTotalDistanceDriven(ride);
         /// wellicht hier ook de bikeparts straks toevoegen en dan de deze ook koppelen aan een ride
         rideRepository.save(ride);
-        List<Part> updateBikeParts = partRepository.findAllByBike(bike);
+        List<Part> updateBikeParts = partRepository.findByBike(bike);
 
-// HIER MOETEN WE NOG EEN CHECK VOOR DE DATUM AAN TOEVOEGEN. HET KAN NAMELIJK ZIJN DAT IEMAND EEN RIT TOEVOEGD UIT HET VERLEDEN EN DAT TOEN DIT ONDERDEEL NOG NIET GEMONTEERD WAS.
-
-//       ??IETS GAAT ER NOG MISSSSS
+//Werkt nu met DE .save,maar waarom werkt dit niet voor de
+        //hier moet nog wel een check op de datum in. Als de rit dus eerder wordt toegeovgoed dan wanneer de bike erop zat dan moet dit niet meegerekend worden.
         for (Part part : updateBikeParts
-        ) { part.updateCurrentDistanceDriven(part,ride);
+        ) { part.updateCurrentDistanceDriven(ride);
+            partRepository.save(part);
         }
+
         ///// Hier moeten we nog nadat we een rit hebben toegeovgd de servicelaag van de BikePart aanroepen.
         return transferRideModelToRideOutputDto(ride);
     }
