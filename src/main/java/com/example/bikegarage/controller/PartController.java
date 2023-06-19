@@ -30,8 +30,12 @@ public class PartController {
         return new ResponseEntity<>(partService.getPartById(id), HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<PartOutputDto>> getAllParts(){
-        return new ResponseEntity<>(partService.getAllParts(), HttpStatus.OK);
+    public ResponseEntity<List<PartOutputDto>> getAllParts(@RequestParam(required = false) Long bikeId) {
+        if (bikeId != null) {
+            return new ResponseEntity<>(partService.getAllPartsByBike(bikeId), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(partService.getAllParts(), HttpStatus.OK);
+        }
     }
 
     @PostMapping

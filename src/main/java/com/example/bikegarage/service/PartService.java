@@ -49,6 +49,20 @@ public class PartService {
         return allPartsOutputDtos;
     }
 
+    public List<PartOutputDto> getAllPartsByBike(Long bikeId) throws RecordNotFoundException {
+        List<PartOutputDto> allPartsByBikeOutputDtos = new ArrayList<>();
+        Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
+        Set<Part> bikeParts = bike.getBikeParts();
+
+        if (bikeParts.isEmpty()) {
+            throw new RecordNotFoundException("I'm sorry but it looks like you don't have any parts on this bike.");
+        }
+        for (Part part : bikeParts) {
+            allPartsByBikeOutputDtos.add(transferPartModelToPartOutputDto(part));
+        }
+        return allPartsByBikeOutputDtos;
+    }
+
     public PartOutputDto createBikePart(PartInputDto partInputDto, Long bikeId) {
         Part part = transferPartInputDtoToPart(partInputDto);
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
