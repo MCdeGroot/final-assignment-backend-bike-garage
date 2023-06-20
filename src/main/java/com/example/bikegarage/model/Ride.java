@@ -24,14 +24,11 @@ public class Ride {
     private String subTitleRide;
     private Double distance;
     private LocalDateTime date;
-
-    //dit is mij nog niet helemaal duidelijk iedere ride heeft maar 1 bike.
     @ManyToOne
     private Bike bike;
     @ManyToOne
     private User user;
 
-    //uitzoeken of ik hier een list van BikeParts moet toevoegen.
 
     //wellicht strava koppeling nog toevoegen
 

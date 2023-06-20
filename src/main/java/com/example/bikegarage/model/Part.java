@@ -33,6 +33,7 @@ public class Part {
 
     //Methods
 
+    //Method to calculate the current distance
     public void updateCurrentDistanceDriven(Ride ride) {
         Double distance = ride.getDistance();
         Double newTotalDistanceDriven = getCurrentDistanceDriven() + distance;

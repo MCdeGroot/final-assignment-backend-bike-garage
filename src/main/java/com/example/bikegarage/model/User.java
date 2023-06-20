@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Getter
@@ -16,21 +18,23 @@ import java.util.ArrayList;
 @Table(name = "users")
 public class User {
     @Id
+    @Column(nullable = false, unique = true)
     private String username;
     private String password;
     @Column
-    private String firstname;
+    private String firstName;
     @Column
-    private String lastname;
+    private String lastName;
     @Column
     private Character gender;
     @Column
-    private String emailAdress;
-    private Long totalDistanceDriven;
+    private String email;
+    private LocalDate dateOfBirth;
+    private Double totalDistanceDriven;
     @OneToMany(mappedBy = "user")
     private ArrayList<Bike> bikes;
     @OneToMany(mappedBy = "user")
     private ArrayList<Ride> rides;
-
+    private String photoUrl;
 
 }
