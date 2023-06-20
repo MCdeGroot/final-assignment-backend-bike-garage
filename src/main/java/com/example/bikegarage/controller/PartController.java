@@ -2,7 +2,6 @@ package com.example.bikegarage.controller;
 
 import com.example.bikegarage.dto.input.PartInputDto;
 import com.example.bikegarage.dto.output.PartOutputDto;
-import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.service.PartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/bikeparts")
@@ -65,8 +64,7 @@ public class PartController {
             return ResponseEntity.badRequest().body(sb.toString());
         }
         PartOutputDto partOutputDto = partService.updateBikePart(id, partInputDto);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/"+ partOutputDto).toUriString());
-        return ResponseEntity.created(uri).body(partOutputDto);
+        return new ResponseEntity<>(partOutputDto, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/user/{id}")

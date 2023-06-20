@@ -2,34 +2,33 @@ package com.example.bikegarage.service;
 
 
 import com.example.bikegarage.dto.input.RideInputDto;
-import com.example.bikegarage.dto.output.PartOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Part;
 import com.example.bikegarage.model.Ride;
+import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.BikeRepository;
 import com.example.bikegarage.repository.PartRepository;
 import com.example.bikegarage.repository.RideRepository;
+import com.example.bikegarage.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class RideService {
     private final RideRepository rideRepository;
     private final BikeRepository bikeRepository;
     private final PartRepository partRepository;
+    private final UserRepository userRepository;
 
 
-    public RideService(RideRepository rideRepository, BikeRepository bikeRepository, PartRepository partRepository) {
+    public RideService(RideRepository rideRepository, BikeRepository bikeRepository, PartRepository partRepository, UserRepository userRepository) {
         this.rideRepository = rideRepository;
         this.bikeRepository = bikeRepository;
-
         this.partRepository = partRepository;
+        this.userRepository = userRepository;
     }
 
     public List<RideOutputDto> getAllRides() throws RecordNotFoundException {
@@ -65,14 +64,19 @@ public class RideService {
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
         ride.setBike(bike);
         bike.updateTotalDistanceDriven(ride);
+        //user.updateUserTotalDistanceDriven(ride);
         /// wellicht hier ook de bikeparts straks toevoegen en dan de deze ook koppelen aan een ride
         rideRepository.save(ride);
+        User user = ride.getUser();
+        user.updateUserTotalDistanceDriven(ride);
+        userRepository.save(user);
         List<Part> updateBikeParts = partRepository.findByBike(bike);
 
 //Werkt nu met DE .save,maar waarom werkt dit niet voor de
         //hier moet nog wel een check op de datum in. Als de rit dus eerder wordt toegeovgoed dan wanneer de bike erop zat dan moet dit niet meegerekend worden.
         for (Part part : updateBikeParts
-        ) { part.updateCurrentDistanceDriven(ride);
+        ) {
+            part.updateCurrentDistanceDriven(ride);
             partRepository.save(part);
         }
 
@@ -110,12 +114,17 @@ public class RideService {
 
     public Ride transferRideInputDtoToRide(RideInputDto rideInputDto) {
         Ride ride = new Ride();
+        Optional<User> userOptional = userRepository.findByUsername(rideInputDto.username);
+        if (userOptional.isEmpty()) {
+            throw new RecordNotFoundException("There is no user found with username " + rideInputDto.username + " in the database!");
+        }
+        User user = userOptional.get();
         ride.setTitleRide(rideInputDto.titleRide);
         ride.setSubTitleRide(rideInputDto.subTitleRide);
         ride.setDistance(rideInputDto.distance);
         ride.setDate(rideInputDto.date);
         ride.setBike(rideInputDto.bike);
-        ride.setUser(rideInputDto.user);
+        ride.setUser(user);
 
         return ride;
     }
@@ -136,9 +145,7 @@ public class RideService {
         if (rideInputDto.bike != null) {
             ride.setBike(rideInputDto.bike);
         }
-        if (rideInputDto.user != null) {
-            ride.setUser(rideInputDto.user);
-        }
+
         return ride;
     }
 

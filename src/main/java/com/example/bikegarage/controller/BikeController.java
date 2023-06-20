@@ -35,7 +35,7 @@ public class BikeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createBike(@RequestBody BikeInputDto bikeInputDto, BindingResult br){
+    public ResponseEntity<Object> createBike(@RequestBody BikeInputDto bikeInputDto, @RequestParam String username, BindingResult br){
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -45,7 +45,7 @@ public class BikeController {
             }
             return ResponseEntity.badRequest().body(sb.toString());
         } else {
-            BikeOutputDto bikeOutputDto = bikeService.createBike(bikeInputDto);
+            BikeOutputDto bikeOutputDto = bikeService.createBike(bikeInputDto, username);
             //hiermee creeer je het pad waarin het object wordt opgeslagen. maar snap niet hoe dit werkt!!!!
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + bikeOutputDto).toUriString());
             return ResponseEntity.created(uri).body(bikeOutputDto);

@@ -18,3 +18,4 @@ Enteiten aanmaken:
 **Nice to haves:**
 
 -[ ] Calendar
+-[ ] Review Training

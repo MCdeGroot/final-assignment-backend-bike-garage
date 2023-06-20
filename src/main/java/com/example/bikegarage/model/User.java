@@ -1,12 +1,15 @@
 package com.example.bikegarage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,21 +19,33 @@ import java.util.ArrayList;
 @Table(name = "users")
 public class User {
     @Id
+    @Column(nullable = false, unique = true)
     private String username;
     private String password;
     @Column
-    private String firstname;
+    private String firstName;
     @Column
-    private String lastname;
+    private String lastName;
     @Column
     private Character gender;
     @Column
-    private String emailAdress;
-    private Long totalDistanceDriven;
+    private String email;
+    private LocalDate dateOfBirth;
+    private Double totalDistanceDriven = 0.0;
     @OneToMany(mappedBy = "user")
-    private ArrayList<Bike> bikes;
+    @JsonIgnore
+    private List<Bike> bikes;
     @OneToMany(mappedBy = "user")
-    private ArrayList<Ride> rides;
+    @JsonIgnore
+    private List<Ride> rides;
+    private String photoUrl;
 
+    public void updateUserTotalDistanceDriven(Ride ride) {
+        Double distance = ride.getDistance();
+        Double newTotalDistanceDriven = getTotalDistanceDriven() + distance;
+        setTotalDistanceDriven(newTotalDistanceDriven);
+    }
 
 }
+
+
