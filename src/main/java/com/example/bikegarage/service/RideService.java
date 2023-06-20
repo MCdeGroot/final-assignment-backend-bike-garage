@@ -108,6 +108,7 @@ public class RideService {
         rideOutputDto.date = ride.getDate();
         rideOutputDto.bike = ride.getBike();
         rideOutputDto.user = ride.getUser();
+        rideOutputDto.review = ride.getReview();
 
         return rideOutputDto;
     }

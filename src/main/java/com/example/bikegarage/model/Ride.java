@@ -28,6 +28,8 @@ public class Ride {
     private Bike bike;
     @ManyToOne
     private User user;
+    @OneToOne
+    private Review review;
 
 
     //wellicht strava koppeling nog toevoegen
