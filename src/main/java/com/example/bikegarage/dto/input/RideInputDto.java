@@ -22,6 +22,6 @@ public class RideInputDto {
     @Lazy(false)
     public Bike bike;
 
-    public User user;
+    public String username;
 
 }

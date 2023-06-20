@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -32,7 +31,7 @@ public class User {
     @Column
     private String email;
     private LocalDate dateOfBirth;
-    private Double totalDistanceDriven;
+    private Double totalDistanceDriven = 0.0;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Bike> bikes;
@@ -41,4 +40,12 @@ public class User {
     private List<Ride> rides;
     private String photoUrl;
 
+    public void updateUserTotalDistanceDriven(Ride ride) {
+        Double distance = ride.getDistance();
+        Double newTotalDistanceDriven = getTotalDistanceDriven() + distance;
+        setTotalDistanceDriven(newTotalDistanceDriven);
+    }
+
 }
+
+
