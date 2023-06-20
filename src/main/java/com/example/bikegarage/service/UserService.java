@@ -6,49 +6,58 @@ import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserService {
     private final UserRepository userRepository;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public UserOutputDto getUserByUsername (String username) throws RecordNotFoundException {
+    public UserOutputDto getUserByUsername(String username) throws RecordNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
-        User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
-        return transferUserModelToUserOutputDto(user);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return transferUserModelToUserOutputDto(user);
+        } else {
+            throw new RecordNotFoundException("There is no user found with username " + username + " in the database!");
+        }
     }
 
-    public List<UserOutputDto> getAllUsers() throws RecordNotFoundException{
-        List<UserOutputDto> allUserOutputDtos = new ArrayList<>();
+    public List<UserOutputDto> getAllUsers() throws RecordNotFoundException {
+        List<UserOutputDto> allUserOutputDto = new ArrayList<>();
         List<User> users = userRepository.findAll();
-        if (users.isEmpty()){
+        if (users.isEmpty()) {
             throw new RecordNotFoundException("There are no users in the database!");
         }
         for (User user : users
-        ) {allUserOutputDtos.add(transferUserModelToUserOutputDto(user));
+        ) {
+            allUserOutputDto.add(transferUserModelToUserOutputDto(user));
         }
-        return allUserOutputDtos;
+        return allUserOutputDto;
     }
 
-    public UserOutputDto createUser(UserInputDto userInputDto){
+    public UserOutputDto createUser(UserInputDto userInputDto) {
         User user = transferUserInputDtoToUser(userInputDto);
         userRepository.save(user);
         return transferUserModelToUserOutputDto(user);
     }
 
-    public UserOutputDto updateUser(UserInputDto userInputDto, String username) throws RecordNotFoundException{
+    public UserOutputDto updateUser(String username, UserInputDto userInputDto) throws RecordNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
         User userUpdate = updateUserInputDtoToUser(userInputDto, user);
         userRepository.save(userUpdate);
         return transferUserModelToUserOutputDto(userUpdate);
     }
-    public String deleteUser(String username) throws RecordNotFoundException{
+
+    public String deleteUser(String username) throws RecordNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
         userRepository.delete(user);
@@ -68,6 +77,7 @@ public class UserService {
 
         return user;
     }
+
     public UserOutputDto transferUserModelToUserOutputDto(User user) {
         UserOutputDto userOutputDto = new UserOutputDto();
         userOutputDto.username = user.getUsername();
@@ -82,7 +92,8 @@ public class UserService {
 
         return userOutputDto;
     }
-    public User updateUserInputDtoToUser(UserInputDto userInputDto, User user){
+
+    public User updateUserInputDtoToUser(UserInputDto userInputDto, User user) {
         // Zorg ervoor dat de username niet wordt gewijzigd. Extra controle, kan ook in de frontend worden opgevangen.
         user.setUsername(user.getUsername());
         if (userInputDto.password != null) {
@@ -108,7 +119,6 @@ public class UserService {
         }
         return user;
     }
-
 
 
 }

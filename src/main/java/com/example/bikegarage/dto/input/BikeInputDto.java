@@ -21,5 +21,5 @@ public class BikeInputDto {
     // ik vraag mij dus af of dit nodig is voor een Input DTO. Vragen aan PAUL
    // public Set<BikePart> bikeParts;
    // public ArrayList<Ride> rides;
-    public User user;
+
 }

@@ -1,5 +1,6 @@
 package com.example.bikegarage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,9 +34,11 @@ public class User {
     private LocalDate dateOfBirth;
     private Double totalDistanceDriven;
     @OneToMany(mappedBy = "user")
-    private ArrayList<Bike> bikes;
+    @JsonIgnore
+    private List<Bike> bikes;
     @OneToMany(mappedBy = "user")
-    private ArrayList<Ride> rides;
+    @JsonIgnore
+    private List<Ride> rides;
     private String photoUrl;
 
 }

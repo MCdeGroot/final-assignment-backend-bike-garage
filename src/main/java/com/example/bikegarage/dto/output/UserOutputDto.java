@@ -1,12 +1,8 @@
 package com.example.bikegarage.dto.output;
-
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Ride;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.OneToMany;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 public class UserOutputDto {
     public String username;
@@ -15,8 +11,8 @@ public class UserOutputDto {
     public Character gender;
     public LocalDate dateOfBirth;
     public Double totalDistanceDriven;
-    public ArrayList<Bike> bikes;
+    public List<Bike> bikes;
 
-    public ArrayList<Ride> rides;
+    public List<Ride> rides;
     public String photoUrl;
 }

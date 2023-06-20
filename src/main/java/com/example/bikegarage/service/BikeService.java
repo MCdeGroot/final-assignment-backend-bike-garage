@@ -4,19 +4,24 @@ import com.example.bikegarage.dto.input.BikeInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
+import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.BikeRepository;
+import com.example.bikegarage.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class BikeService {
 //repository injection
     private final BikeRepository bikeRepository;
-    public BikeService(BikeRepository bikeRepository) {
+    private final UserRepository userRepository;
+    public BikeService(BikeRepository bikeRepository, UserRepository userRepository) {
         this.bikeRepository = bikeRepository;
+        this.userRepository = userRepository;
     }
 
     public BikeOutputDto getBikeById(Long id) throws RecordNotFoundException {
@@ -36,8 +41,11 @@ public class BikeService {
         return allBikesOutputDtos;
     }
 
-    public BikeOutputDto createBike(BikeInputDto bikeInputDto){
+    public BikeOutputDto createBike(BikeInputDto bikeInputDto, String username){
         Bike bike = transferBikeInputDtoToBike(bikeInputDto);
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
+        bike.setUser(user);
         bikeRepository.save(bike);
         return transferBikeModelToBikeOutputDto(bike);
     }
@@ -87,7 +95,6 @@ public class BikeService {
         bike.setModel(bikeInputDto.model);
         bike.setName(bikeInputDto.name);
         bike.setBikeType(bikeInputDto.bikeType);
-        bike.setUser(bikeInputDto.user);
 
         return bike;
     }
@@ -107,9 +114,6 @@ public class BikeService {
         }
         if (bikeInputDto.bikeType != null){
             bike.setBikeType(bikeInputDto.bikeType);
-        }
-        if (bikeInputDto.user != null){
-            bike.setUser(bikeInputDto.user);
         }
 
         return bike;
