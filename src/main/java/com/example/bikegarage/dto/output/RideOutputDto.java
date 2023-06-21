@@ -1,6 +1,7 @@
 package com.example.bikegarage.dto.output;
 
 import com.example.bikegarage.model.Bike;
+import com.example.bikegarage.model.Review;
 import com.example.bikegarage.model.User;
 
 import java.time.LocalDateTime;
@@ -15,4 +16,5 @@ public class RideOutputDto {
     public LocalDateTime date;
     public Bike bike;
     public User user;
+    public Review review;
 }

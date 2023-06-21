@@ -71,8 +71,6 @@ public class BikeController {
         bikeService.deleteBike(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 //    @GetMapping
 //    public ResponseEntity<Iterable<Bike>> getAllBikes(){
 //        return ResponseEntity.ok(bikeRepository.findAll());
