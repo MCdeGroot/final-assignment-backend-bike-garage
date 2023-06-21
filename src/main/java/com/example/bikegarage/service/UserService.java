@@ -4,6 +4,7 @@ import com.example.bikegarage.dto.input.UserInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
+import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.UserRepository;
 import org.springframework.stereotype.Service;

@@ -40,8 +40,7 @@ public class User {
     private List<Ride> rides;
     private String photoUrl;
 
-    public void updateUserTotalDistanceDriven(Ride ride) {
-        Double distance = ride.getDistance();
+    public void updateUserTotalDistanceDriven(Double distance) {
         Double newTotalDistanceDriven = getTotalDistanceDriven() + distance;
         setTotalDistanceDriven(newTotalDistanceDriven);
     }

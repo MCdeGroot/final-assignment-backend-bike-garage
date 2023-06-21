@@ -34,8 +34,7 @@ public class Part {
     //Methods
 
     //Method to calculate the current distance
-    public void updateCurrentDistanceDriven(Ride ride) {
-        Double distance = ride.getDistance();
+    public void updateCurrentDistanceDriven(Double distance) {
         Double newTotalDistanceDriven = getCurrentDistanceDriven() + distance;
         setCurrentDistanceDriven(newTotalDistanceDriven);
     }
