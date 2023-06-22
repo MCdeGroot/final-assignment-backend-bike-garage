@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 
@@ -24,6 +25,9 @@ public class Ride {
     private String subTitleRide;
     private Double distance;
     private LocalDateTime date;
+    private Long averagePower;
+    private Long normalizedPower;
+    private Duration timeRide;
     @ManyToOne
     private Bike bike;
     @ManyToOne

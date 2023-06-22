@@ -90,6 +90,9 @@ public class RideService {
         rideOutputDto.subTitleRide = ride.getSubTitleRide();
         rideOutputDto.distance = ride.getDistance();
         rideOutputDto.date = ride.getDate();
+        rideOutputDto.averagePower = ride.getAveragePower();
+        rideOutputDto.normalizedPower = ride.getNormalizedPower();
+        rideOutputDto.timeRide = ride.getTimeRide();
         rideOutputDto.bike = ride.getBike();
         rideOutputDto.user = ride.getUser();
         rideOutputDto.review = ride.getReview();
@@ -108,6 +111,9 @@ public class RideService {
         ride.setSubTitleRide(rideInputDto.subTitleRide);
         ride.setDistance(rideInputDto.distance);
         ride.setDate(rideInputDto.date);
+        ride.setAveragePower(rideInputDto.averagePower);
+        ride.setNormalizedPower(rideInputDto.normalizedPower);
+        ride.setTimeRide(rideInputDto.timeRide);
         ride.setBike(rideInputDto.bike);
         ride.setUser(user);
 
