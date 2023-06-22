@@ -87,9 +87,9 @@ public class UserService {
         userOutputDto.gender = user.getGender();
         userOutputDto.dateOfBirth = user.getDateOfBirth();
         userOutputDto.photoUrl = user.getPhotoUrl();
-        userOutputDto.totalDistanceDriven = user.getTotalDistanceDriven();
-        userOutputDto.bikes = user.getBikes();
+        userOutputDto.totalDistanceDriven = getTotalDistanceDriven(user);
         userOutputDto.rides = user.getRides();
+        userOutputDto.bikes = user.getBikes();
 
         return userOutputDto;
     }
@@ -119,6 +119,18 @@ public class UserService {
             user.setPhotoUrl(userInputDto.photoUrl);
         }
         return user;
+    }
+
+    public Double getTotalDistanceDriven(User user) {
+        Double totalDistanceDriven = 0.0;
+        List<Ride> rides = user.getRides();
+        if (rides != null) {
+            for (Ride ride : rides
+            ) {
+                totalDistanceDriven += ride.getDistance();
+            }
+        }
+        return totalDistanceDriven;
     }
 
 

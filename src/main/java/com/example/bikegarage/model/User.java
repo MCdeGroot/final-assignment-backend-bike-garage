@@ -31,7 +31,6 @@ public class User {
     @Column
     private String email;
     private LocalDate dateOfBirth;
-    private Double totalDistanceDriven = 0.0;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Bike> bikes;
@@ -39,11 +38,6 @@ public class User {
     @JsonIgnore
     private List<Ride> rides;
     private String photoUrl;
-
-    public void updateUserTotalDistanceDriven(Double distance) {
-        Double newTotalDistanceDriven = getTotalDistanceDriven() + distance;
-        setTotalDistanceDriven(newTotalDistanceDriven);
-    }
 
 }
 

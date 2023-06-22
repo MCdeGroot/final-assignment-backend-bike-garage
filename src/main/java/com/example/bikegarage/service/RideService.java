@@ -63,19 +63,8 @@ public class RideService {
         Ride ride = transferRideInputDtoToRide(rideInputDto);
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
         ride.setBike(bike);
-        bike.updateTotalDistanceDriven(ride.getDistance());
         rideRepository.save(ride);
-        User user = ride.getUser();
-        user.updateUserTotalDistanceDriven(ride.getDistance());
-        userRepository.save(user);
-        List<Part> updateBikeParts = partRepository.findByBike(bike);
-        for (Part part : updateBikeParts
-        ) {
-            if (part.getInstallationDate().isBefore(ride.getDate())) {
-                part.updateCurrentDistanceDriven(ride.getDistance());
-                partRepository.save(part);
-            }
-        }
+        updateBikeParts(ride, ride.getDistance());
         return transferRideModelToRideOutputDto(ride);
     }
 
@@ -83,17 +72,7 @@ public class RideService {
         Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + id + " cannot be found"));
         Double distanceDifference = rideInputDto.distance - ride.getDistance();
         Ride rideUpdate = updateRideInputDtoToRide(rideInputDto, ride);
-        ride.getBike().updateTotalDistanceDriven(distanceDifference);
-        ride.getUser().updateUserTotalDistanceDriven(distanceDifference);
-        rideRepository.save(rideUpdate);
-
-        for (Part part : ride.getBike().getBikeParts()
-        ) {
-            if (part.getInstallationDate().isBefore(ride.getDate())) {
-                part.updateCurrentDistanceDriven(distanceDifference);
-                partRepository.save(part);
-            }
-        }
+        updateBikeParts(ride, distanceDifference);
         return transferRideModelToRideOutputDto(rideUpdate);
     }
 
@@ -155,4 +134,14 @@ public class RideService {
         return ride;
     }
 
+    public void updateBikeParts(Ride ride, Double distance) {
+        for (Part part : ride.getBike().getBikeParts()
+        ) {
+            if (part.getInstallationDate().isBefore(ride.getDate())) {
+                part.updateCurrentDistanceDriven(distance);
+                partRepository.save(part);
+            }
+        }
+
+    }
 }
