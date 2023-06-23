@@ -4,6 +4,7 @@ import com.example.bikegarage.dto.input.UserInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
+import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -86,9 +87,9 @@ public class UserService {
         userOutputDto.gender = user.getGender();
         userOutputDto.dateOfBirth = user.getDateOfBirth();
         userOutputDto.photoUrl = user.getPhotoUrl();
-        userOutputDto.totalDistanceDriven = user.getTotalDistanceDriven();
-        userOutputDto.bikes = user.getBikes();
+        userOutputDto.totalDistanceDriven = getTotalDistanceDriven(user);
         userOutputDto.rides = user.getRides();
+        userOutputDto.bikes = user.getBikes();
 
         return userOutputDto;
     }
@@ -118,6 +119,18 @@ public class UserService {
             user.setPhotoUrl(userInputDto.photoUrl);
         }
         return user;
+    }
+
+    public Double getTotalDistanceDriven(User user) {
+        Double totalDistanceDriven = 0.0;
+        List<Ride> rides = user.getRides();
+        if (rides != null) {
+            for (Ride ride : rides
+            ) {
+                totalDistanceDriven += ride.getDistance();
+            }
+        }
+        return totalDistanceDriven;
     }
 
 

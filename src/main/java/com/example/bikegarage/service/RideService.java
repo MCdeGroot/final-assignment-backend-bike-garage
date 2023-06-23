@@ -63,32 +63,16 @@ public class RideService {
         Ride ride = transferRideInputDtoToRide(rideInputDto);
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
         ride.setBike(bike);
-        bike.updateTotalDistanceDriven(ride);
-        //user.updateUserTotalDistanceDriven(ride);
-        /// wellicht hier ook de bikeparts straks toevoegen en dan de deze ook koppelen aan een ride
         rideRepository.save(ride);
-        User user = ride.getUser();
-        user.updateUserTotalDistanceDriven(ride);
-        userRepository.save(user);
-        List<Part> updateBikeParts = partRepository.findByBike(bike);
-
-//Werkt nu met DE .save,maar waarom werkt dit niet voor de
-        //hier moet nog wel een check op de datum in. Als de rit dus eerder wordt toegeovgoed dan wanneer de bike erop zat dan moet dit niet meegerekend worden.
-        for (Part part : updateBikeParts
-        ) {
-            part.updateCurrentDistanceDriven(ride);
-            partRepository.save(part);
-        }
-
-        ///// Hier moeten we nog nadat we een rit hebben toegeovgd de servicelaag van de BikePart aanroepen.
+        updateBikeParts(ride, ride.getDistance());
         return transferRideModelToRideOutputDto(ride);
     }
 
     public RideOutputDto updateRide(Long id, RideInputDto rideInputDto) throws RecordNotFoundException {
         Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + id + " cannot be found"));
+        Double distanceDifference = rideInputDto.distance - ride.getDistance();
         Ride rideUpdate = updateRideInputDtoToRide(rideInputDto, ride);
-
-        rideRepository.save(rideUpdate);
+        updateBikeParts(ride, distanceDifference);
         return transferRideModelToRideOutputDto(rideUpdate);
     }
 
@@ -106,6 +90,9 @@ public class RideService {
         rideOutputDto.subTitleRide = ride.getSubTitleRide();
         rideOutputDto.distance = ride.getDistance();
         rideOutputDto.date = ride.getDate();
+        rideOutputDto.averagePower = ride.getAveragePower();
+        rideOutputDto.normalizedPower = ride.getNormalizedPower();
+        rideOutputDto.timeRide = ride.getTimeRide();
         rideOutputDto.bike = ride.getBike();
         rideOutputDto.user = ride.getUser();
         rideOutputDto.review = ride.getReview();
@@ -124,6 +111,9 @@ public class RideService {
         ride.setSubTitleRide(rideInputDto.subTitleRide);
         ride.setDistance(rideInputDto.distance);
         ride.setDate(rideInputDto.date);
+        ride.setAveragePower(rideInputDto.averagePower);
+        ride.setNormalizedPower(rideInputDto.normalizedPower);
+        ride.setTimeRide(rideInputDto.timeRide);
         ride.setBike(rideInputDto.bike);
         ride.setUser(user);
 
@@ -150,4 +140,14 @@ public class RideService {
         return ride;
     }
 
+    public void updateBikeParts(Ride ride, Double distance) {
+        for (Part part : ride.getBike().getBikeParts()
+        ) {
+            if (part.getInstallationDate().isBefore(ride.getDate())) {
+                part.updateCurrentDistanceDriven(distance);
+                partRepository.save(part);
+            }
+        }
+
+    }
 }

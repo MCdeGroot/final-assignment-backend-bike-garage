@@ -27,7 +27,6 @@ public class Bike {
     private String brand;
     private String model;
     private String name;
-    private Double totalDistanceDriven = 0.0;
     @Enumerated(EnumType.STRING)
     private BikeType bikeType;
     @OneToMany (mappedBy = "bike")
@@ -41,11 +40,5 @@ public class Bike {
 
 // private ?? imageBike;
 
-    //Methods
 
-    public void updateTotalDistanceDriven(Ride ride) {
-        Double distance = ride.getDistance();
-        Double newTotalDistanceDriven = getTotalDistanceDriven() + distance;
-        setTotalDistanceDriven(newTotalDistanceDriven);
-    }
 }

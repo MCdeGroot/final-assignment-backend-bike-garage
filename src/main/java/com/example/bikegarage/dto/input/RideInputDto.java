@@ -5,6 +5,7 @@ import com.example.bikegarage.model.User;
 import jakarta.validation.constraints.*;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -16,6 +17,9 @@ public class RideInputDto {
     @NotNull(message = "Distance is required")
     @Positive(message = "Distance must be higher than zero")
     public Double distance;
+    public Duration timeRide;
+    public Long averagePower;
+    public Long normalizedPower;
     @NotNull
     @PastOrPresent(message = "The date can't be in the future")
     public LocalDateTime date;
