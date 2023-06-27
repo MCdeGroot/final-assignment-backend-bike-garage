@@ -78,7 +78,9 @@ public class RideService {
 
     public String deleteRide(Long id) throws RecordNotFoundException {
         Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Ride with id-number" + id + " cannot be found"));
+        Double distanceDifference = 0.0 - ride.getDistance();
         rideRepository.deleteById(id);
+        updateBikeParts(ride, distanceDifference);
         return "Well well I hope you know what you're doing, because you just removed " + ride.getTitleRide() + "!";
     }
 
