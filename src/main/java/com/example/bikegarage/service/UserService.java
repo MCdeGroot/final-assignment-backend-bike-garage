@@ -3,15 +3,19 @@ package com.example.bikegarage.service;
 import com.example.bikegarage.dto.input.UserInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
+import com.example.bikegarage.exception.UsernameNotFoundException;
+import com.example.bikegarage.model.Authority;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.UserRepository;
+import com.example.bikegarage.util.RandomStringGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -31,6 +35,12 @@ public class UserService {
         }
     }
 
+    public User getUser(String username) throws UsernameNotFoundException{
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
+        return user;
+    }
+
     public List<UserOutputDto> getAllUsers() throws RecordNotFoundException {
         List<UserOutputDto> allUserOutputDto = new ArrayList<>();
         List<User> users = userRepository.findAll();
@@ -45,6 +55,7 @@ public class UserService {
     }
 
     public UserOutputDto createUser(UserInputDto userInputDto) {
+        userInputDto.setApikey(RandomStringGenerator.generateAlphaNumeric(20));
         User user = transferUserInputDtoToUser(userInputDto);
         userRepository.save(user);
         return transferUserModelToUserOutputDto(user);
@@ -65,6 +76,30 @@ public class UserService {
         return "Well well I hope you know what you're doing, because you just removed " + user.getUsername() + "!";
     }
 
+    //security and authorization
+    public Set<Authority> getAuthorities(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
+        UserOutputDto userDto = transferUserModelToUserOutputDto(user);
+        return userDto.getAuthorities();
+    }
+
+    public void addAuthority(String username, String authority) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
+        user.addAuthority(new Authority(username, authority));
+        userRepository.save(user);
+    }
+
+    public void removeAuthority(String username, String authority) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
+        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        user.removeAuthority(authorityToRemove);
+        userRepository.save(user);
+    }
+
+    //transfer methods
     public User transferUserInputDtoToUser(UserInputDto userInputDto) {
         User user = new User();
         user.setUsername(userInputDto.username);
@@ -90,6 +125,9 @@ public class UserService {
         userOutputDto.totalDistanceDriven = getTotalDistanceDriven(user);
         userOutputDto.rides = user.getRides();
         userOutputDto.bikes = user.getBikes();
+        userOutputDto.enabled = user.isEnabled();
+        userOutputDto.apikey = user.getApikey();
+        userOutputDto.authorities = user.getAuthorities();
 
         return userOutputDto;
     }
