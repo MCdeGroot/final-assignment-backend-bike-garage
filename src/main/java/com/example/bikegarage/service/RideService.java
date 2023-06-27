@@ -91,7 +91,7 @@ public class RideService {
         rideOutputDto.distance = ride.getDistance();
         rideOutputDto.date = ride.getDate();
         rideOutputDto.averagePower = ride.getAveragePower();
-        rideOutputDto.normalizedPower = ride.getNormalizedPower();
+        rideOutputDto.normalizedPower= ride.getNormalizedPower();
         rideOutputDto.timeRide = ride.getTimeRide();
         rideOutputDto.bike = ride.getBike();
         rideOutputDto.user = ride.getUser();
