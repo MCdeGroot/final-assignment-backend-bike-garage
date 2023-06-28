@@ -5,11 +5,13 @@ import com.example.bikegarage.dto.output.UserOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.exception.UsernameNotFoundException;
 import com.example.bikegarage.model.Authority;
-import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.UserRepository;
 import com.example.bikegarage.util.RandomStringGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +22,10 @@ import java.util.Set;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
+    @Autowired
+    @Lazy//loop voorkomen
+    private PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -57,7 +63,10 @@ public class UserService {
     public UserOutputDto createUser(UserInputDto userInputDto) {
         userInputDto.setApikey(RandomStringGenerator.generateAlphaNumeric(20));
         User user = transferUserInputDtoToUser(userInputDto);
+        user.addAuthority(new Authority(user.getUsername(), "ROLE_USER"));
+        user.setPassword(passwordEncoder.encode(userInputDto.password));
         userRepository.save(user);
+
         return transferUserModelToUserOutputDto(user);
     }
 
