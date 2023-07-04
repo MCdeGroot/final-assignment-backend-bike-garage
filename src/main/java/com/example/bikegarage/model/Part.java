@@ -20,7 +20,6 @@ public class Part {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
     @Enumerated(EnumType.STRING)
     private PartType partType;
     private Double currentDistanceDriven = 0.0;

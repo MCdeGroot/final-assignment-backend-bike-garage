@@ -93,7 +93,7 @@ public class PartService {
     public String deletePart(Long id) throws RecordNotFoundException {
         Part part = partRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Part with id-number " + id + " cannot be found"));
         partRepository.deleteById(id);
-        return "Well well I hope you know what you're doing, because you just removed " + part.getName() + "!";
+        return "Well well I hope you know what you're doing, because you just removed " + part.getPartType() + "!";
     }
 
 
@@ -101,7 +101,6 @@ public class PartService {
     public PartOutputDto transferPartModelToPartOutputDto(Part part) {
         PartOutputDto partOutputDto = new PartOutputDto();
         partOutputDto.id = part.getId();
-        partOutputDto.name = part.getName();
         partOutputDto.partType = part.getPartType();
         partOutputDto.currentDistanceDriven = part.getCurrentDistanceDriven();
         partOutputDto.maxDistance = part.getMaxDistance();
@@ -113,7 +112,6 @@ public class PartService {
 
     public Part transferPartInputDtoToPart(PartInputDto partInputDto) {
         Part part = new Part();
-        part.setName(partInputDto.name);
         part.setPartType(partInputDto.partType);
         part.setMaxDistance(partInputDto.maxDistance);
         part.setInstallationDate(partInputDto.installationDate);
@@ -124,9 +122,6 @@ public class PartService {
     //Methods
 
     public Part updatePartInputDtoToPart(PartInputDto partInputDto, Part part) {
-        if (partInputDto.name != null) {
-            part.setName(partInputDto.name);
-        }
         if (partInputDto.partType != null) {
             part.setPartType(partInputDto.partType);
         }
