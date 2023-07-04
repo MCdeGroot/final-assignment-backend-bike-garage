@@ -93,7 +93,7 @@ public class PartService {
     public String deletePart(Long id) throws RecordNotFoundException {
         Part part = partRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Part with id-number " + id + " cannot be found"));
         partRepository.deleteById(id);
-        return "Well well I hope you know what you're doing, because you just removed " + part.getName() + "!";
+        return "Well well I hope you know what you're doing, because you just removed " + part.getPartType() + "!";
     }
 
 
