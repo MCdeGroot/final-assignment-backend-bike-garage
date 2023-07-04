@@ -30,6 +30,10 @@ public class RideController {
             return new ResponseEntity<>(rideService.getAllRides(), HttpStatus.OK);
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<RideOutputDto> getRideById(@PathVariable Long id){
+        return new ResponseEntity<>(rideService.getRideById(id), HttpStatus.OK);
+    }
 
 
     @PostMapping

@@ -2,6 +2,7 @@ package com.example.bikegarage.service;
 
 
 import com.example.bikegarage.dto.input.RideInputDto;
+import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
@@ -31,6 +32,10 @@ public class RideService {
         this.userRepository = userRepository;
     }
 
+    public RideOutputDto getRideById(Long id) throws RecordNotFoundException {
+        Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + id + " cannot be found"));
+        return transferRideModelToRideOutputDto(ride);
+    }
     public List<RideOutputDto> getAllRides() throws RecordNotFoundException {
         List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
         List<Ride> rides = rideRepository.findAll();
