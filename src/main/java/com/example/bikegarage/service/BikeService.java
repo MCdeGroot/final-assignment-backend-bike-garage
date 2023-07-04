@@ -10,6 +10,7 @@ import com.example.bikegarage.repository.BikeRepository;
 import com.example.bikegarage.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -82,6 +83,7 @@ public class BikeService {
         bikeOutputDto.model = bike.getModel();
         bikeOutputDto.name = bike.getName();
         bikeOutputDto.totalDistanceDriven = getTotalDistanceDriven(bike);
+        bikeOutputDto.totalHoursDriven = getTotalHoursDriven(bike);
         bikeOutputDto.bikeType = bike.getBikeType();
         bikeOutputDto.bikeParts = bike.getBikeParts();
         bikeOutputDto.rides = bike.getRides();
@@ -132,6 +134,19 @@ public class BikeService {
             }
         }
         return totalDistanceDriven;
+    }
+
+    public Duration getTotalHoursDriven(Bike bike) {
+        Duration totalHoursDriven = Duration.ZERO;
+        List<Ride> rides = new ArrayList<>();
+        rides = bike.getRides();
+        if (rides != null) {
+            for (Ride ride : rides
+            ) {
+                totalHoursDriven = totalHoursDriven.plus(ride.getTimeRide());
+            }
+        }
+        return totalHoursDriven;
     }
 
 }
