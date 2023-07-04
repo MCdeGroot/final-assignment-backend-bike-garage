@@ -18,26 +18,26 @@ VALUES (100, 111111111, 'Giant', 'TCR Advanced PRO', 'Purple rain','ROAD'),
 --        ('Ochtendrit', 'Fietsrit', 120.08, '2023-06-10', 223, 272, 'PT1H4M16S', 100);
 
 -- 5 bikeparts Bike 100
-INSERT INTO bike_parts (id, name, part_type, current_distance_driven, max_distance, bike_id, installation_date)
+INSERT INTO bike_parts (id, part_type, current_distance_driven, max_distance, bike_id, installation_date)
 VALUES
-    (100, 'Chain', 'CHAIN', 0.0, 4000.0, 100, '2023-06-01'),
-    (101, 'Cassette', 'CASSETTE', 0.0, 8000.0, 100, '2023-06-01'),
-    (102, 'Front Tire', 'FRONTTIRE', 0.0, 5000.0, 100, '2023-06-01'),
-    (103, 'Rear Tire', 'REARTIRE', 0.0, 5000.0, 100, '2023-06-01'),
-    (104, 'Front Brake Pad', 'FRONTBRAKEPAD', 0.0, 10000.0, 100, '2023-06-01');
+    (100, 'CHAIN', 0.0, 4000.0, 100, '2023-06-01'),
+    (101, 'CASSETTE', 0.0, 8000.0, 100, '2023-06-01'),
+    (102, 'FRONTTIRE', 0.0, 5000.0, 100, '2023-06-01'),
+    (103, 'REARTIRE', 0.0, 5000.0, 100, '2023-06-01'),
+    (104, 'FRONTBRAKEPAD', 0.0, 10000.0, 100, '2023-06-01');
 
 -- 5 bikeparts Bike 101
-INSERT INTO bike_parts (id, name, part_type, current_distance_driven, max_distance, bike_id, installation_date)
+INSERT INTO bike_parts (id, part_type, current_distance_driven, max_distance, bike_id, installation_date)
 VALUES
-    (105, 'Chain', 'CHAIN', 0.0, 2000.0, 101, '2023-06-01'),
-    (106, 'Cassette', 'CASSETTE', 0.0, 5000.0, 101, '2023-06-01'),
-    (107, 'Front Tire', 'FRONTTIRE', 0.0, 5000.0, 101, '2023-06-01'),
-    (108, 'Rear Tire', 'REARTIRE', 0.0, 5000.0, 101, '2023-06-01'),
-    (109, 'Front Brake Pad', 'FRONTBRAKEPAD', 0.0, 10000.0, 101, '2023-06-01');
+    (105, 'CHAIN', 0.0, 2000.0, 101, '2023-06-01'),
+    (106, 'CASSETTE', 0.0, 5000.0, 101, '2023-06-01'),
+    (107, 'FRONTTIRE', 0.0, 5000.0, 101, '2023-06-01'),
+    (108, 'REARTIRE', 0.0, 5000.0, 101, '2023-06-01'),
+    (109, 'FRONTBRAKEPAD', 0.0, 10000.0, 101, '2023-06-01');
 
 -- 3 bikeparts Bike 102
-INSERT INTO bike_parts (id, name, part_type, current_distance_driven, max_distance, bike_id, installation_date)
+INSERT INTO bike_parts (id, part_type, current_distance_driven, max_distance, bike_id, installation_date)
 VALUES
-    (110, 'Chain', 'CHAIN', 0.0, 2000.0, 102, '2023-06-01'),
-    (111, 'Cassette', 'CASSETTE', 0.0, 5000.0, 102, '2023-06-01'),
-    (112, 'Front Tire', 'FRONTTIRE', 0.0, 5000.0, 102, '2023-06-01');
+    (110, 'CHAIN', 0.0, 2000.0, 102, '2023-06-01'),
+    (111, 'CASSETTE', 0.0, 5000.0, 102, '2023-06-01'),
+    (112, 'FRONTTIRE', 0.0, 5000.0, 102, '2023-06-01');
