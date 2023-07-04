@@ -27,6 +27,7 @@ public class Ride {
     private LocalDateTime date;
     private Long averagePower;
     private Long normalizedPower;
+    @Column(name = "time_ride")
     private Duration timeRide;
     @ManyToOne
     private Bike bike;
