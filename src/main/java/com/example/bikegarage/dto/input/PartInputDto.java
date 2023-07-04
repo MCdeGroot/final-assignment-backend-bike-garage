@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 public class PartInputDto {
 
-    public String name;
     @Enumerated(EnumType.STRING)
     public PartType partType;
     public Double maxDistance;

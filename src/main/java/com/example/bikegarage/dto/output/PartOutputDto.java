@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 public class PartOutputDto {
     public Long id;
-    public String name;
     @Enumerated(EnumType.STRING)
     public PartType partType;
     public Double currentDistanceDriven;
