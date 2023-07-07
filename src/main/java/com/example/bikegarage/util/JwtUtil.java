@@ -51,6 +51,8 @@ public class JwtUtil {
         return createToken(claims, userDetails.getUsername());
     }
 
+    //TODO tijd van token aanpaasen
+
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
