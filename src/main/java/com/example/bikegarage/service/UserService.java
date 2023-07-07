@@ -1,7 +1,9 @@
 package com.example.bikegarage.service;
 
+import com.example.bikegarage.dto.input.PasswordInputDto;
 import com.example.bikegarage.dto.input.UserInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
+import com.example.bikegarage.exception.ForbiddenException;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.exception.UsernameNotFoundException;
 import com.example.bikegarage.model.Authority;
@@ -11,6 +13,10 @@ import com.example.bikegarage.repository.UserRepository;
 import com.example.bikegarage.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +82,25 @@ public class UserService {
         User userUpdate = updateUserInputDtoToUser(userInputDto, user);
         userRepository.save(userUpdate);
         return transferUserModelToUserOutputDto(userUpdate);
+    }
+    @PreAuthorize("#username==authentication.getName()")
+    public String updatePassword(String username, PasswordInputDto passwordInputDto) throws RecordNotFoundException{
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
+
+        // authenticatie voor een ingelogde user om te kijken of hij dit wel mag wijzigen.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)){
+            boolean hasAuthority = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
+            if (!hasAuthority){ throw new ForbiddenException("Looks like you don't have the right authority to change this password.");
+            }
+        }
+        user.setPassword(passwordEncoder.encode(passwordInputDto.newPassword));
+        userRepository.save(user);
+        return "We did it! We changed your password";
+
     }
 
     public String deleteUser(String username) throws RecordNotFoundException {

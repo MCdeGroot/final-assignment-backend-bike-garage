@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig {
 
     public final CustomUserDetailsService customUserDetailsService;
@@ -85,6 +87,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.GET,"/users/{username}/authorities").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.PUT,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.PUT,"/users/updatepassword/{username}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.DELETE,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/{username}/authorities/{authority}").hasAnyRole("USER","ADMIN")
 

@@ -1,5 +1,6 @@
 package com.example.bikegarage.controller;
 
+import com.example.bikegarage.dto.input.PasswordInputDto;
 import com.example.bikegarage.dto.input.UserInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
 import com.example.bikegarage.exception.BadRequestException;
@@ -64,6 +65,20 @@ public class UserController {
         }
         UserOutputDto userOutputDto = userService.updateUser(username, userInputDto);
         return new ResponseEntity<>(userOutputDto, HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/updatepassword/{username}")
+    public ResponseEntity<String> updatePassword(@PathVariable String username, @RequestBody PasswordInputDto passwordInputDto, BindingResult br){
+        if (br.hasFieldErrors()) {
+        StringBuilder sb = new StringBuilder();
+        for (FieldError fe : br.getFieldErrors()) {
+            sb.append(fe.getField() + ": ");
+            sb.append(fe.getDefaultMessage());
+            sb.append("\n");
+        }
+        return ResponseEntity.badRequest().body(sb.toString());
+    }
+        return new ResponseEntity<>(userService.updatePassword(username, passwordInputDto), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{username}")

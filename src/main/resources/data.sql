@@ -1,8 +1,16 @@
+-- 1 user
+INSERT INTO users (username, password, email, first_name, last_name, enabled)
+VALUES ('mathijs', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK', 'mathijsdegroot@bikegarage.com', 'Mathijs', 'de Groot', true);
+
+-- authorities
+INSERT INTO authorities (username, authority)
+values ('mathijs', 'ROLE_USER');
+
 -- 3 bikes
-INSERT INTO bikes (id, frame_number, brand, model, name, bike_type)
-VALUES (100, 111111111, 'Giant', 'TCR Advanced PRO', 'Purple rain','ROAD'),
-       (101, 123456789, 'Canyon', 'Speedmax CFR', 'Time wonder', 'TIMETRIAL'),
-       (102, 987654321, 'Canyon', 'Lux CFR', 'Mounty', 'MOUNTAIN');
+INSERT INTO bikes (id, frame_number, brand, model, name, bike_type, user_username)
+VALUES (100, 111111111, 'Giant', 'TCR Advanced PRO', 'Purple rain','ROAD', 'mathijs'),
+       (101, 123456789, 'Canyon', 'Speedmax CFR', 'Time wonder', 'TIMETRIAL', 'mathijs'),
+       (102, 987654321, 'Canyon', 'Lux CFR', 'Mounty', 'MOUNTAIN', 'mathijs');
 
 -- 10 rides met Bike 100
 INSERT INTO rides (id, title_ride, sub_title_ride, distance, date, average_power, normalized_power, time_ride, bike_id)
