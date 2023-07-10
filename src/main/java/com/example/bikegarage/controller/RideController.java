@@ -35,6 +35,11 @@ public class RideController {
         return new ResponseEntity<>(rideService.getRideById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/{username}")
+    public ResponseEntity<List<RideOutputDto>> getAllRidesByUsername(@PathVariable String username){
+        return new ResponseEntity<>(rideService.getAllRidesByUsername(), HttpStatus.OK);
+    }
+
 
     @PostMapping
     public ResponseEntity<Object> createRide(@RequestBody RideInputDto rideInputDto, @RequestParam Long bikeId, BindingResult br ){
