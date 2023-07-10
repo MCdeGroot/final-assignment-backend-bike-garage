@@ -37,7 +37,7 @@ public class RideController {
 
     @GetMapping("/{username}")
     public ResponseEntity<List<RideOutputDto>> getAllRidesByUsername(@PathVariable String username){
-        return new ResponseEntity<>(rideService.getAllRidesByUsername(), HttpStatus.OK);
+        return new ResponseEntity<>(rideService.getAllRidesByUsername(username), HttpStatus.OK);
     }
 
 
