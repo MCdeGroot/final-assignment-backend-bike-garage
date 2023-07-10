@@ -37,8 +37,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @PreAuthorize("#username==authentication.getName()")
     public UserOutputDto getUserByUsername(String username) throws RecordNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return transferUserModelToUserOutputDto(user);
