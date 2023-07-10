@@ -153,6 +153,7 @@ public class UserService {
     public UserOutputDto transferUserModelToUserOutputDto(User user) {
         UserOutputDto userOutputDto = new UserOutputDto();
         userOutputDto.username = user.getUsername();
+        userOutputDto.email = user.getEmail();
         userOutputDto.firstName = user.getFirstName();
         userOutputDto.lastName = user.getLastName();
         userOutputDto.gender = user.getGender();
