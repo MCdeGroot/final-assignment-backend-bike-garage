@@ -30,9 +30,14 @@ public class RideController {
             return new ResponseEntity<>(rideService.getAllRides(), HttpStatus.OK);
         }
     }
-    @GetMapping("/{id}")
+    @GetMapping("/ride-data/{id}")
     public ResponseEntity<RideOutputDto> getRideById(@PathVariable Long id){
         return new ResponseEntity<>(rideService.getRideById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<List<RideOutputDto>> getAllRidesByUsername(@PathVariable String username){
+        return new ResponseEntity<>(rideService.getAllRidesByUsername(username), HttpStatus.OK);
     }
 
 

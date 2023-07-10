@@ -5,6 +5,7 @@ import com.example.bikegarage.dto.input.RideInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
+import com.example.bikegarage.exception.UsernameNotFoundException;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Part;
 import com.example.bikegarage.model.Ride;
@@ -42,6 +43,18 @@ public class RideService {
         if (rides.isEmpty()) {
             throw new RecordNotFoundException("I'm sorry but it looks like you don't have any rides ridden yet");
         }
+        for (Ride ride : rides
+        ) {
+            allRidesOutputDtos.add(transferRideModelToRideOutputDto(ride));
+        }
+        return allRidesOutputDtos;
+    }
+
+    public List<RideOutputDto> getAllRidesByUsername(String username) throws RecordNotFoundException {
+        List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
+        List<Ride> rides = rideRepository.findAllByUser(user);
         for (Ride ride : rides
         ) {
             allRidesOutputDtos.add(transferRideModelToRideOutputDto(ride));
