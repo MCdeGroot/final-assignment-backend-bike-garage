@@ -2,11 +2,18 @@ package com.example.bikegarage.service;
 
 import com.example.bikegarage.dto.input.ReviewInputDto;
 import com.example.bikegarage.dto.output.ReviewOutputDto;
+import com.example.bikegarage.exception.ForbiddenException;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Review;
 import com.example.bikegarage.model.Ride;
+import com.example.bikegarage.model.User;
+import com.example.bikegarage.util.GetAuthentication;
 import com.example.bikegarage.repository.ReviewRepository;
 import com.example.bikegarage.repository.RideRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,20 +26,38 @@ public class ReviewService {
         this.rideRepository = rideRepository;
     }
 
-    public ReviewOutputDto getReviewOnRide(Long rideId){
+    public ReviewOutputDto getReviewOnRide(Long rideId) {
         Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + rideId + " cannot be found"));
         return transferReviewModelToReviewOutputDto(ride.getReview());
     }
 
+
     public ReviewOutputDto createReview(ReviewInputDto reviewInputDto, Long rideId) throws RecordNotFoundException {
+
+        // authenticatie voor een ingelogde user om te kijken of hij dit wel mag wijzigen.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            boolean hasAuthority = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_TRAINER"));
+            if (!hasAuthority) {
+                throw new ForbiddenException("Looks like you don't have the right authority to do this.");
+            }
+        }
+
+        Ride ride = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RecordNotFoundException("Ride with id " + rideId + " cannot be found"));
+        User trainer = ride.getUser().getTrainer();
+        if (trainer == null || !trainer.getUsername().equals(authentication.getName())) {
+            throw new ForbiddenException("You are not authorized to create a review for this ride.");
+        }
+
         Review review = transferReviewInputDtoToReviewModel(reviewInputDto);
-        Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + rideId + " cannot be found"));
         review.setRide(ride);
         reviewRepository.save(review);
         ride.setReview(review);
         rideRepository.save(ride);
         return transferReviewModelToReviewOutputDto(review);
     }
+
 
     public ReviewOutputDto updateReview(ReviewInputDto reviewInputDto, Long rideId) throws RecordNotFoundException {
         Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + rideId + " cannot be found"));
@@ -46,6 +71,7 @@ public class ReviewService {
         reviewRepository.save(review);
         return transferReviewModelToReviewOutputDto(review);
     }
+
     public String deleteReview(Long rideId) throws RecordNotFoundException {
         Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + rideId + " cannot be found"));
         reviewRepository.delete(ride.getReview());

@@ -127,7 +127,7 @@ public class UserService {
 
         if (!(authentication instanceof AnonymousAuthenticationToken)){
             boolean hasAuthority = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
-            if (!hasAuthority){ throw new ForbiddenException("Looks like you don't have the right authority to change this password.");
+            if (!hasAuthority){ throw new ForbiddenException("Looks like you don't have the right authority to do this.");
             }
         }
         user.setPassword(passwordEncoder.encode(passwordInputDto.newPassword));
