@@ -2,6 +2,7 @@ package com.example.bikegarage.dto.output;
 import com.example.bikegarage.model.Authority;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Ride;
+import com.example.bikegarage.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ public class UserOutputDto {
     public Set<Authority> authorities;
     public Boolean enabled;
     public String apikey;
-
+    public List<User> cyclists;
+    public String trainerUsername;
 
 }
