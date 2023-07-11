@@ -1,9 +1,9 @@
 -- 1 user
-INSERT INTO users (username, password, email, first_name, last_name, enabled)
+INSERT INTO users (username, password, email, first_name, last_name, enabled, trainer_username)
 VALUES ('mathijs', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK', 'mathijsdegroot@bikegarage.com',
-        'Mathijs', 'de Groot', true),
+        'Mathijs', 'de Groot', true, 'piet'),
        ('piet', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK', 'pietpost@bikegarage.com', 'Piet',
-        'Post', true);
+        'Post', true, 'mathijs');
 -- authorities
 INSERT INTO authorities (username, authority)
 VALUES ('mathijs', 'ROLE_USER'),
