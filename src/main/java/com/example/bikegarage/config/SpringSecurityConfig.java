@@ -68,7 +68,8 @@ public class SpringSecurityConfig {
 
                 //-----------Endpoint Bike------------------
                 .requestMatchers(HttpMethod.GET, "/bikes").hasAnyRole("USER","TRAINER","ADMIN")
-                .requestMatchers(HttpMethod.GET, "/bikes/{id}").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.GET, "/bikes/bike-data/{id}").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.GET, "/bikes/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.POST, "/bikes").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.PUT, "/bikes").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/bikes/{id}").hasAnyRole("USER","ADMIN")

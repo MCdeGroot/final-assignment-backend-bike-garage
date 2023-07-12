@@ -3,6 +3,7 @@ package com.example.bikegarage.service;
 import com.example.bikegarage.dto.input.BikeInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
+import com.example.bikegarage.exception.UsernameNotFoundException;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
@@ -35,6 +36,20 @@ public class BikeService {
     public List<BikeOutputDto> getAllBikes() throws RecordNotFoundException {
         List<BikeOutputDto> allBikesOutputDtos = new ArrayList<>();
         List<Bike> bikes = bikeRepository.findAll();
+        if (bikes.isEmpty()) {
+            throw new RecordNotFoundException("I'm sorry but it looks like you don't have any bikes in your possession");
+        }
+        for (Bike bike : bikes
+        ) {
+            allBikesOutputDtos.add(transferBikeModelToBikeOutputDto(bike));
+        }
+        return allBikesOutputDtos;
+    }
+    public List<BikeOutputDto> getAllBikesByUsername(String username) throws RecordNotFoundException {
+        List<BikeOutputDto> allBikesOutputDtos = new ArrayList<>();
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
+        List<Bike> bikes = bikeRepository.findAllByUser(user);
         if (bikes.isEmpty()) {
             throw new RecordNotFoundException("I'm sorry but it looks like you don't have any bikes in your possession");
         }
