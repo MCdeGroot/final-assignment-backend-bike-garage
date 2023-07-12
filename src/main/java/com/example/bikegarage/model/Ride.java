@@ -1,5 +1,6 @@
 package com.example.bikegarage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,10 +31,13 @@ public class Ride {
     @Column(name = "time_ride")
     private Duration timeRide;
     @ManyToOne
+    @JsonIgnore
     private Bike bike;
     @ManyToOne
+    @JsonIgnore
     private User user;
     @OneToOne
+    @JsonIgnore
     private Review review;
 
 

@@ -20,5 +20,5 @@ public class RideOutputDto {
     public Long normalizedPower;
     public Bike bike;
     public User user;
-    public Review review;
+    public Double reviewRating;
 }

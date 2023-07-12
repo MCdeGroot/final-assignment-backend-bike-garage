@@ -37,6 +37,7 @@ public class RideService {
         Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Ride with id-number " + id + " cannot be found"));
         return transferRideModelToRideOutputDto(ride);
     }
+
     public List<RideOutputDto> getAllRides() throws RecordNotFoundException {
         List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
         List<Ride> rides = rideRepository.findAll();
@@ -51,12 +52,24 @@ public class RideService {
     }
 
     public List<RideOutputDto> getAllRidesByUsername(String username) throws RecordNotFoundException {
-        List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
+        Set<Ride> uniqueRides = new HashSet<>();
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
-        List<Ride> rides = rideRepository.findAllByUser(user);
-        for (Ride ride : rides
-        ) {
+        List<User> cyclists = userRepository.findCyclistsByTrainer(user);
+
+        if (cyclists != null) {
+            for (User cyclist : cyclists) {
+                if (cyclist.getRides() != null) {
+                    uniqueRides.addAll(cyclist.getRides());
+                }
+            }
+        }
+
+        List<Ride> userRides = rideRepository.findAllByUser(user);
+        uniqueRides.addAll(userRides);
+
+        List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
+        for (Ride ride : uniqueRides) {
             allRidesOutputDtos.add(transferRideModelToRideOutputDto(ride));
         }
         return allRidesOutputDtos;
@@ -111,11 +124,13 @@ public class RideService {
         rideOutputDto.distance = ride.getDistance();
         rideOutputDto.date = ride.getDate();
         rideOutputDto.averagePower = ride.getAveragePower();
-        rideOutputDto.normalizedPower= ride.getNormalizedPower();
+        rideOutputDto.normalizedPower = ride.getNormalizedPower();
         rideOutputDto.timeRide = ride.getTimeRide();
         rideOutputDto.bike = ride.getBike();
         rideOutputDto.user = ride.getUser();
-        rideOutputDto.review = ride.getReview();
+        if (ride.getReview() != null) {
+            rideOutputDto.reviewRating = ride.getReview().getRating();
+        }
 
         return rideOutputDto;
     }

@@ -24,7 +24,7 @@ public class BikeController {
 
     //het liefst wil ik hem met id of framenumber; moet ik hier aparte mappings voor maken of kan dit in één?
     //Of moeten we dit in de frontend regelen?
-    @GetMapping("/{id}")
+    @GetMapping("/bike-data/{id}")
     public ResponseEntity<BikeOutputDto> getBikeById(@PathVariable Long id){
         return new ResponseEntity<>(bikeService.getBikeById(id), HttpStatus.OK);
     }
@@ -32,6 +32,11 @@ public class BikeController {
     @GetMapping
     public ResponseEntity<List<BikeOutputDto>> getAllBikes(){
         return new ResponseEntity<>(bikeService.getAllBikes(),HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<List<BikeOutputDto>> getAllBikesByUsername(@PathVariable String username){
+        return new ResponseEntity<>(bikeService.getAllBikesByUsername(username),HttpStatus.OK);
     }
 
     @PostMapping
