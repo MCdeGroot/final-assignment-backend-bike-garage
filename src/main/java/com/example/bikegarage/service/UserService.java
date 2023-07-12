@@ -1,5 +1,6 @@
 package com.example.bikegarage.service;
 
+import com.example.bikegarage.dto.input.AddTrainerInputDTO;
 import com.example.bikegarage.dto.input.PasswordInputDto;
 import com.example.bikegarage.dto.input.UserInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
@@ -68,6 +69,21 @@ public class UserService {
         return allUserOutputDto;
     }
 
+    public List<UserOutputDto> getAllCyclistsOfTrainer(String trainerUsername) throws RecordNotFoundException {
+        List<UserOutputDto> allCyclistsOutputDto = new ArrayList<>();
+        Optional<User> trainerOptional = userRepository.findByUsername(trainerUsername);
+        User trainer = trainerOptional.orElseThrow(() -> new UsernameNotFoundException(trainerUsername));
+        List<User> cyclists = userRepository.findCyclistsByTrainer(trainer);
+        if (cyclists.isEmpty()) {
+            throw new RecordNotFoundException("Looks like this user doesn't train other cyclists!");
+        }
+        for (User cyclist : cyclists
+        ) {
+            allCyclistsOutputDto.add(transferUserModelToUserOutputDto(cyclist));
+        }
+        return allCyclistsOutputDto;
+    }
+
     public UserOutputDto createUser(UserInputDto userInputDto) {
         userInputDto.setApikey(RandomStringGenerator.generateAlphaNumeric(20));
         User user = transferUserInputDtoToUser(userInputDto);
@@ -85,6 +101,21 @@ public class UserService {
         userRepository.save(userUpdate);
         return transferUserModelToUserOutputDto(userUpdate);
     }
+
+//    @PreAuthorize("#username==authentication.getName()")
+    public UserOutputDto assignTrainer(String cyclistUsername, AddTrainerInputDTO addTrainerInputDTO) throws RecordNotFoundException {
+        Optional<User> cyclistOptional = userRepository.findByUsername(cyclistUsername);
+        Optional<User> trainerOptional = userRepository.findByUsername(addTrainerInputDTO.trainerUsername);
+        User cyclist = cyclistOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + cyclistUsername + " in the database!"));
+        User trainer = trainerOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + addTrainerInputDTO.trainerUsername + " in the database!"));
+
+        cyclist.setTrainer(trainer);
+        trainer.addAuthority(new Authority(trainer.getUsername(), "ROLE_TRAINER"));
+        userRepository.save(cyclist);
+        userRepository.save(trainer);
+
+        return transferUserModelToUserOutputDto(cyclist);
+    }
     @PreAuthorize("#username==authentication.getName()")
     public String updatePassword(String username, PasswordInputDto passwordInputDto) throws RecordNotFoundException{
 
@@ -96,7 +127,7 @@ public class UserService {
 
         if (!(authentication instanceof AnonymousAuthenticationToken)){
             boolean hasAuthority = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
-            if (!hasAuthority){ throw new ForbiddenException("Looks like you don't have the right authority to change this password.");
+            if (!hasAuthority){ throw new ForbiddenException("Looks like you don't have the right authority to do this.");
             }
         }
         user.setPassword(passwordEncoder.encode(passwordInputDto.newPassword));
@@ -165,6 +196,10 @@ public class UserService {
         userOutputDto.enabled = user.isEnabled();
         userOutputDto.apikey = user.getApikey();
         userOutputDto.authorities = user.getAuthorities();
+        userOutputDto.cyclists = user.getCyclists();
+        if (user.getTrainer() != null){
+        userOutputDto.trainerUsername = user.getTrainer().getUsername();
+        }
 
         return userOutputDto;
     }

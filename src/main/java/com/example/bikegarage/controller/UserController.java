@@ -1,5 +1,6 @@
 package com.example.bikegarage.controller;
 
+import com.example.bikegarage.dto.input.AddTrainerInputDTO;
 import com.example.bikegarage.dto.input.PasswordInputDto;
 import com.example.bikegarage.dto.input.UserInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
@@ -36,6 +37,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
+    @GetMapping("/cyclists/{trainerUsername}")
+    public ResponseEntity<List<UserOutputDto>> getAllCyclistByTrainer(@PathVariable String trainerUsername) {
+        return new ResponseEntity<>(userService.getAllCyclistsOfTrainer(trainerUsername), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
         if (br.hasFieldErrors()) {
@@ -64,6 +70,20 @@ public class UserController {
             return ResponseEntity.badRequest().body(sb.toString());
         }
         UserOutputDto userOutputDto = userService.updateUser(username, userInputDto);
+        return new ResponseEntity<>(userOutputDto, HttpStatus.ACCEPTED);
+    }
+    @PutMapping("/assign-trainer/{cyclistUsername}")
+    public ResponseEntity<Object> assignTrainerToUser(@PathVariable String cyclistUsername, @RequestBody AddTrainerInputDTO trainerInputDto, BindingResult br) {
+        if (br.hasFieldErrors()) {
+            StringBuilder sb = new StringBuilder();
+            for (FieldError fe : br.getFieldErrors()) {
+                sb.append(fe.getField() + ": ");
+                sb.append(fe.getDefaultMessage());
+                sb.append("\n");
+            }
+            return ResponseEntity.badRequest().body(sb.toString());
+        }
+        UserOutputDto userOutputDto = userService.assignTrainer(cyclistUsername, trainerInputDto);
         return new ResponseEntity<>(userOutputDto, HttpStatus.ACCEPTED);
     }
 

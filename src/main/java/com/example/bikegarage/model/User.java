@@ -41,7 +41,12 @@ public class User {
     @JsonIgnore
     private List<Ride> rides;
     private String photoUrl;
-
+    @ManyToOne
+    @JsonIgnore
+    private User trainer;
+    @OneToMany(mappedBy = "trainer")
+    @JsonIgnore
+    private List<User> cyclists;
     //Security and Authorithy
     @Column(nullable = false)
     private boolean enabled = true;

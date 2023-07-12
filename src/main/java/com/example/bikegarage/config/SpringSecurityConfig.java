@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /*  Deze security is niet de enige manier om het te doen.
     In de andere branch van deze github repo staat een ander voorbeeld
@@ -81,13 +82,22 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/rides").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/rides/{id}").hasAnyRole("USER","ADMIN")
 
+                //-----------Endpoint Review-----------------
+                .requestMatchers(HttpMethod.GET, "/{rideId}/review").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.POST, "/{rideId}/review").hasAnyRole("TRAINER")
+                .requestMatchers(HttpMethod.PUT, "/{rideId}/review").hasAnyRole("TRAINER")
+                .requestMatchers(HttpMethod.DELETE, "/{rideId}/review").hasAnyRole("TRAINER","ADMIN")
+
+
                 //-----------Endpoint Users-----------------
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST,"/users/{username}/authorities").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.GET,"/users").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.GET,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.GET, "/users/cyclists/{trainerUsername}").hasAnyRole("TRAINER")
                 .requestMatchers(HttpMethod.GET,"/users/{username}/authorities").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.PUT,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/users/assign-trainer/{cyclistUsername}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.PUT,"/users/updatepassword/{username}").authenticated()
                 .requestMatchers(HttpMethod.DELETE,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/{username}/authorities/{authority}").hasAnyRole("USER","ADMIN")

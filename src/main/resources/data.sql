@@ -3,10 +3,13 @@ INSERT INTO users (username, password, email, first_name, last_name, enabled)
 VALUES ('mathijs', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK', 'mathijsdegroot@bikegarage.com',
         'Mathijs', 'de Groot', true),
        ('piet', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK', 'pietpost@bikegarage.com', 'Piet',
-        'Post', true);
+        'Post', true),
+       ('kees', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK', 'keeskarel@bikegarage.com', 'Kees',
+        'Karel', true);
 -- authorities
 INSERT INTO authorities (username, authority)
 VALUES ('mathijs', 'ROLE_USER'),
+       ('mathijs', 'ROLE_TRAINER'),
        ('piet', 'ROLE_USER');
 
 -- 4 bikes
@@ -29,7 +32,7 @@ VALUES (100, 'Namiddagrit', 'Fietsrit', 71.82, '2023-06-21', 250, 254, '79113000
        (107, 'Avondrit', 'Fietsrit', 76.22, '2023-06-12', 270, 277, '7644000000000', 100, 'mathijs'),
        (108, 'Klein rondje met papsie', 'Fietsrit', 33.29, '2023-06-11', 207, 239, '3856000000000', 100, 'mathijs'),
        (109, 'Ochtendrit', 'Fietsrit', 120.08, '2023-06-10', 223, 272, '4320000000000', 100, 'mathijs'),
-(110, 'Ochtendrit', 'Fietsrit', 120.08, '2023-06-10', 223, 272, '4320000000000', 103, 'piet');
+       (110, 'Ochtendrit', 'Fietsrit', 120.08, '2023-06-10', 223, 272, '4320000000000', 103, 'piet');
 
 -- 5 bikeparts Bike 100
 INSERT INTO bike_parts (id, part_type, current_distance_driven, max_distance, bike_id, installation_date)
