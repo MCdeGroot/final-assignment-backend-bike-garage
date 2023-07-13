@@ -73,7 +73,7 @@ public class RideController {
         RideOutputDto rideOutputDto = rideService.updateRide(id, newRideInputDto);
         return new ResponseEntity<>(rideOutputDto, HttpStatus.ACCEPTED);
     }
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteRideById (@PathVariable Long id){
         rideService.deleteRide(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
