@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public class RideInputDto {
-    @NotBlank(message = "Title is required!")
+    @NotNull(message = "Title is required!")
     public String titleRide;
     @Size(max = 200, message = "The subtitle can only be 200 characters long.")
     public String subTitleRide;
@@ -20,12 +20,14 @@ public class RideInputDto {
     public Duration timeRide;
     public Long averagePower;
     public Long normalizedPower;
+
+//    TODO hier nog naar kijken, de datum werkt gewoon als ie in de teokomst is.
     @NotNull
     @PastOrPresent(message = "The date can't be in the future")
     public LocalDateTime date;
     @Lazy(false)
     public Bike bike;
-
+    @NotBlank(message = "User must be logged in!")
     public String username;
 
 }
