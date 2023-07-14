@@ -67,7 +67,7 @@ public class PartController {
         return new ResponseEntity<>(partOutputDto, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deletePartById(@PathVariable Long id) {
             partService.deletePart(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -76,7 +76,8 @@ public class SpringSecurityConfig {
 
                 //-----------Endpoint BikeParts------------------
                 .requestMatchers(HttpMethod.GET, "/bikeparts").hasAnyRole("USER")
-
+                .requestMatchers(HttpMethod.GET, "/bikeparts/{id}").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.DELETE, "/bikeparts/{id}").hasAnyRole("USER","ADMIN")
                 //-----------Endpoint Rides-----------------
                 .requestMatchers(HttpMethod.GET, "/rides").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.GET, "/rides/ride-data/{id}").hasAnyRole("USER","TRAINER","ADMIN")
