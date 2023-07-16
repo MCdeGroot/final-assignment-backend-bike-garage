@@ -71,6 +71,8 @@ public class BikeController {
         BikeOutputDto bikeOutputDto = bikeService.updateBike(id, newBikeInputDto);
         return new ResponseEntity<>(bikeOutputDto, HttpStatus.ACCEPTED);
     }
+
+    //TODO aan paul vragen hoe dit werkt. Ik kan nu mijn bike niet verwijderen als hier onderdelen op zitten. Ook niet als er al ritten op zitten. Dit moet dus aangepast worden, want ik wil wel bikes kunnen verwijderen en dan mogen gelijk alle onderdelen verwijderd worden, maar ik wil niet dat de ritten worden veriwjderd als de bike veriwjderd wordt.
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteBikeById (@PathVariable Long id){
         bikeService.deleteBike(id);
