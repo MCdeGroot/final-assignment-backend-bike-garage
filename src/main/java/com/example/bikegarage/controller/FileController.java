@@ -1,5 +1,7 @@
 package com.example.bikegarage.controller;
 
+import com.example.bikegarage.model.File;
+import com.example.bikegarage.service.FileService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,21 +13,24 @@ import java.util.Objects;
 @RestController
 @CrossOrigin
 public class FileController {
+    private final FileService fileService;
+
+    public FileController(FileService fileService) {
+        this.fileService = fileService;
+    }
 
     //    post for single upload
-    @PostMapping("upload-file/{id}")
-    ResponseEntity<Object> singleFileUpload(@PathVariable Long id, @RequestParam("file") MultipartFile file){
-
-
+    @PostMapping("upload-file")
+    File singleFileUpload(@RequestParam("file") MultipartFile file){
 
         // next line makes url. example "http://localhost:8080/download-file/id"
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download-file/").path(Objects.requireNonNull(id.toString())).path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
-
-        String fileName = fileService.storeFile(file, url, id);
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download-file/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
 
         String contentType = file.getContentType();
 
-        return new ResponseEntity<>(fileName, contentType, url );
+        String fileName = fileService.storeFile(file, url);
+
+        return new File(fileName, contentType, url );
     }
 
     //    get for single download
