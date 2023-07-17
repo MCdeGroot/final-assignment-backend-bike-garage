@@ -1,5 +1,6 @@
 package com.example.bikegarage.service;
 
+import com.example.bikegarage.model.File;
 import com.example.bikegarage.repository.FileRepository;
 import lombok.Value;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,14 @@ public class FileService {
     public String storeFile(MultipartFile file, String url){
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         Path filePath = Paths.get(fileStoragePath + "\\" + fileName);
+
+        try {
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Issue in storing the file", e);
+        }
+        fileRepository.save(new File(fileName, file.getContentType(), filePath.toString()));
+
 
         return fileName;
     }
