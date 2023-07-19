@@ -85,6 +85,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/rides/{distance}").hasAnyRole("USER","TRAINER","ADMIN") // navragen hoe dit werkt
                 .requestMatchers(HttpMethod.GET, "/rides/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.POST, "/rides").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.POST, "/rides/{rideId/photo}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.PUT, "/rides/{id}").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/rides/{id}").hasAnyRole("USER","ADMIN")
 
@@ -93,6 +94,9 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/{rideId}/review").hasAnyRole("TRAINER")
                 .requestMatchers(HttpMethod.PUT, "/{rideId}/review").hasAnyRole("TRAINER")
                 .requestMatchers(HttpMethod.DELETE, "/{rideId}/review").hasAnyRole("TRAINER","ADMIN")
+
+                //-----------Endpoint Files-----------------
+                .requestMatchers(HttpMethod.POST, "/upload-file").hasAnyRole("USER")
 
 
                 //-----------Endpoint Users-----------------

@@ -82,7 +82,7 @@ public class RideController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/photo/{rideId}")
+    @PostMapping("/{rideId}/photo")
     public void assignPhotoToRide(@PathVariable Long rideId, @RequestBody MultipartFile file) {
         File fileUpload = fileController.singleFileUpload(file);
         rideService.assignFileToRide(fileUpload.getFileName(), rideId);
