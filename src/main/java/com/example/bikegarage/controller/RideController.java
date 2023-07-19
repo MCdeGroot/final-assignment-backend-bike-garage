@@ -22,11 +22,10 @@ import java.util.Objects;
 public class RideController {
     private final FileService fileService;
     private final RideService rideService;
-    private final FileController fileController;
-    public RideController(FileService fileService, RideService rideService, FileController fileController) {
+
+    public RideController(FileService fileService, RideService rideService) {
         this.fileService = fileService;
         this.rideService = rideService;
-        this.fileController = fileController;
     }
 
     @GetMapping
