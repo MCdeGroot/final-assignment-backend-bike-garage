@@ -85,7 +85,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/rides/{distance}").hasAnyRole("USER","TRAINER","ADMIN") // navragen hoe dit werkt
                 .requestMatchers(HttpMethod.GET, "/rides/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.POST, "/rides").hasAnyRole("USER")
-                .requestMatchers(HttpMethod.POST, "/rides/{rideId/photo}").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.POST, "/rides/{rideId}/photo").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.PUT, "/rides/{id}").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/rides/{id}").hasAnyRole("USER","ADMIN")
 

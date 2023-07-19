@@ -110,18 +110,15 @@ public class RideService {
         return "Well well I hope you know what you're doing, because you just removed " + ride.getTitleRide() + "!";
     }
 
-    public void assignFileToRide(String name, Long rideId){
-        Optional<Ride> rideOptional = rideRepository.findById(rideId);
-        Optional<File> fileOptional = fileRepository.findByFileName(name);
+    public void assignFileToRide(String name, Long rideId) throws RecordNotFoundException{
+        Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number" + rideId + " cannot be found"));;
+        File file = fileRepository.findByFileName(name).orElseThrow(() -> new RecordNotFoundException("kan de file niet vinden"));
 
-        if (rideOptional.isPresent() && fileOptional.isPresent()){
-            File file = fileOptional.get();
-            Ride ride = rideOptional.get();
             ride.setFile(file);
             rideRepository.save(ride);
         }
 
-    }
+
 
 
     public RideOutputDto transferRideModelToRideOutputDto(Ride ride) {

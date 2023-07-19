@@ -3,6 +3,7 @@ package com.example.bikegarage.controller;
 import com.example.bikegarage.dto.input.RideInputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.model.File;
+import com.example.bikegarage.service.FileService;
 import com.example.bikegarage.service.RideService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/rides")
 public class RideController {
+    private final FileService fileService;
     private final RideService rideService;
     private final FileController fileController;
-    public RideController(RideService rideService, FileController fileController) {
+    public RideController(FileService fileService, RideService rideService, FileController fileController) {
+        this.fileService = fileService;
         this.rideService = rideService;
         this.fileController = fileController;
     }
@@ -83,9 +87,19 @@ public class RideController {
     }
 
     @PostMapping("/{rideId}/photo")
-    public void assignPhotoToRide(@PathVariable Long rideId, @RequestBody MultipartFile file) {
-        File fileUpload = fileController.singleFileUpload(file);
+    public String assignPhotoToRide(@PathVariable Long rideId, @RequestParam("file") MultipartFile file) {
+        // next line makes url. example "http://localhost:8080/download-file/id"
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download-file/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
+
+        String contentType = file.getContentType();
+
+        String fileName = fileService.storeFile(file, url);
+
+        File fileUpload = new File(fileName, contentType, url );
+
         rideService.assignFileToRide(fileUpload.getFileName(), rideId);
+
+        return "upload gelukt";
     }
 
 }

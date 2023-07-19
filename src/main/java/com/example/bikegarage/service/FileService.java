@@ -46,9 +46,7 @@ public class FileService {
         } catch (IOException e) {
             throw new RuntimeException("Issue in storing the file", e);
         }
-        fileRepository.save(new File(fileName, file.getContentType(), filePath.toString()));
-
-
+        fileRepository.save(new File(fileName, file.getContentType(), url));
         return fileName;
     }
 
