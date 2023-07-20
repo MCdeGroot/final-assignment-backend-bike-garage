@@ -89,7 +89,7 @@ public class RideController {
     @PostMapping("/{rideId}/photo")
     public String assignPhotoToRide(@PathVariable Long rideId, @RequestParam("file") MultipartFile file) {
         // next line makes url. example "http://localhost:8080/download-file/id"
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download-file/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
 
         String contentType = file.getContentType();
 
