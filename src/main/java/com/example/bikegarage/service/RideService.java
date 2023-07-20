@@ -137,7 +137,7 @@ public class RideService {
             rideOutputDto.reviewRating = ride.getReview().getRating();
         }
         if (ride.getFile() != null){
-        rideOutputDto.fileName = ride.getFile().getUrl();
+        rideOutputDto.url = ride.getFile().getUrl();
         }
 
         return rideOutputDto;

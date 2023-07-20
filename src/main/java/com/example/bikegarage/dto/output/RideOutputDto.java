@@ -21,5 +21,5 @@ public class RideOutputDto {
     public Bike bike;
     public User user;
     public Double reviewRating;
-    public String fileName;
+    public String url;
 }
