@@ -44,8 +44,6 @@ VALUES (103, 'Namiddagrit', 'Fietsrit', 30.11, '2023-06-16', 242, 278, '18169000
        (109, 'Ochtendrit', 'Fietsrit', 120.08, '2023-06-10', 223, 272, '4320000000000', 100, 'mathijs'),
        (110, 'Ochtendrit', 'Fietsrit', 120.08, '2023-06-10', 223, 272, '4320000000000', 103, 'piet');
 
-
-
 -- 5 bikeparts Bike 100
 INSERT INTO bike_parts (id, part_type, current_distance_driven, max_distance, bike_id, installation_date)
 VALUES (100, 'CHAIN', 1555.0, 4000.0, 100, '2023-06-01'),

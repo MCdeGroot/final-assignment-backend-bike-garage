@@ -2,18 +2,11 @@ package com.example.bikegarage.service;
 
 
 import com.example.bikegarage.dto.input.RideInputDto;
-import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.exception.UsernameNotFoundException;
-import com.example.bikegarage.model.Bike;
-import com.example.bikegarage.model.Part;
-import com.example.bikegarage.model.Ride;
-import com.example.bikegarage.model.User;
-import com.example.bikegarage.repository.BikeRepository;
-import com.example.bikegarage.repository.PartRepository;
-import com.example.bikegarage.repository.RideRepository;
-import com.example.bikegarage.repository.UserRepository;
+import com.example.bikegarage.model.*;
+import com.example.bikegarage.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,13 +17,15 @@ public class RideService {
     private final BikeRepository bikeRepository;
     private final PartRepository partRepository;
     private final UserRepository userRepository;
+    private final FileRepository fileRepository;
 
 
-    public RideService(RideRepository rideRepository, BikeRepository bikeRepository, PartRepository partRepository, UserRepository userRepository) {
+    public RideService(RideRepository rideRepository, BikeRepository bikeRepository, PartRepository partRepository, UserRepository userRepository, FileRepository fileRepository) {
         this.rideRepository = rideRepository;
         this.bikeRepository = bikeRepository;
         this.partRepository = partRepository;
         this.userRepository = userRepository;
+        this.fileRepository = fileRepository;
     }
 
     public RideOutputDto getRideById(Long id) throws RecordNotFoundException {
@@ -115,6 +110,16 @@ public class RideService {
         return "Well well I hope you know what you're doing, because you just removed " + ride.getTitleRide() + "!";
     }
 
+    public void assignFileToRide(String name, Long rideId) throws RecordNotFoundException{
+        Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number" + rideId + " cannot be found"));;
+        File file = fileRepository.findByFileName(name).orElseThrow(() -> new RecordNotFoundException("Can't find the file"));
+
+            ride.setFile(file);
+            rideRepository.save(ride);
+        }
+
+
+
 
     public RideOutputDto transferRideModelToRideOutputDto(Ride ride) {
         RideOutputDto rideOutputDto = new RideOutputDto();
@@ -130,6 +135,9 @@ public class RideService {
         rideOutputDto.user = ride.getUser();
         if (ride.getReview() != null) {
             rideOutputDto.reviewRating = ride.getReview().getRating();
+        }
+        if (ride.getFile() != null){
+        rideOutputDto.url = ride.getFile().getUrl();
         }
 
         return rideOutputDto;
