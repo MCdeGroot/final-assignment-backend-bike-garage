@@ -5,6 +5,7 @@ import com.example.bikegarage.dto.output.RideOutputDto;
 import com.example.bikegarage.model.File;
 import com.example.bikegarage.service.FileService;
 import com.example.bikegarage.service.RideService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -48,7 +49,7 @@ public class RideController {
 
 
     @PostMapping
-    public ResponseEntity<Object> createRide(@RequestBody RideInputDto rideInputDto, @RequestParam Long bikeId, BindingResult br ){
+    public ResponseEntity<Object> createRide(@Valid @RequestBody RideInputDto rideInputDto, @RequestParam Long bikeId, BindingResult br ){
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -66,7 +67,7 @@ public class RideController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateRide(@PathVariable Long id, @RequestBody RideInputDto newRideInputDto, BindingResult br ){
+    public ResponseEntity<Object> updateRide(@PathVariable Long id, @Valid @RequestBody RideInputDto newRideInputDto, BindingResult br ){
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -88,7 +89,7 @@ public class RideController {
     @PostMapping("/{rideId}/photo")
     public String assignPhotoToRide(@PathVariable Long rideId, @RequestParam("file") MultipartFile file) {
         // next line makes url. example "http://localhost:8080/download-file/id"
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download-file/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
 
         String contentType = file.getContentType();
 

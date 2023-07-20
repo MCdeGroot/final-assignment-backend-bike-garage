@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<Object> updateUser(@PathVariable String username, @RequestBody UserInputDto userInputDto, BindingResult br) {
+    public ResponseEntity<Object> updateUser(@PathVariable String username, @Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -73,7 +73,7 @@ public class UserController {
         return new ResponseEntity<>(userOutputDto, HttpStatus.ACCEPTED);
     }
     @PutMapping("/assign-trainer/{cyclistUsername}")
-    public ResponseEntity<Object> assignTrainerToUser(@PathVariable String cyclistUsername, @RequestBody AddTrainerInputDTO trainerInputDto, BindingResult br) {
+    public ResponseEntity<Object> assignTrainerToUser(@PathVariable String cyclistUsername, @Valid @RequestBody AddTrainerInputDTO trainerInputDto, BindingResult br) {
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @PutMapping("/updatepassword/{username}")
-    public ResponseEntity<String> updatePassword(@PathVariable String username, @RequestBody PasswordInputDto passwordInputDto, BindingResult br){
+    public ResponseEntity<String> updatePassword(@PathVariable String username, @Valid @RequestBody PasswordInputDto passwordInputDto, BindingResult br){
         if (br.hasFieldErrors()) {
         StringBuilder sb = new StringBuilder();
         for (FieldError fe : br.getFieldErrors()) {
@@ -112,7 +112,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @Valid @RequestBody Map<String, Object> fields) {
         try {
             String authorityName = (String) fields.get("authority");
             userService.addAuthority(username, authorityName);
