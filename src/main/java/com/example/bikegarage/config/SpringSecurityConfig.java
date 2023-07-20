@@ -97,6 +97,7 @@ public class SpringSecurityConfig {
 
                 //-----------Endpoint Files-----------------
                 .requestMatchers(HttpMethod.POST, "/upload-file").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.GET, "/download/{fileName}").permitAll()
 
 
                 //-----------Endpoint Users-----------------

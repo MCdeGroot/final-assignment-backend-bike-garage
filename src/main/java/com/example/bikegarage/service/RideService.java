@@ -112,7 +112,7 @@ public class RideService {
 
     public void assignFileToRide(String name, Long rideId) throws RecordNotFoundException{
         Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number" + rideId + " cannot be found"));;
-        File file = fileRepository.findByFileName(name).orElseThrow(() -> new RecordNotFoundException("kan de file niet vinden"));
+        File file = fileRepository.findByFileName(name).orElseThrow(() -> new RecordNotFoundException("Can't find the file"));
 
             ride.setFile(file);
             rideRepository.save(ride);

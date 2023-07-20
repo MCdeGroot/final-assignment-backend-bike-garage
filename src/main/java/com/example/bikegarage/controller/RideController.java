@@ -98,7 +98,7 @@ public class RideController {
 
         rideService.assignFileToRide(fileUpload.getFileName(), rideId);
 
-        return "upload gelukt";
+        return "upload successful!";
     }
 
 }
