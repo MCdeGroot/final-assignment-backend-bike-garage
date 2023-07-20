@@ -4,6 +4,7 @@ import com.example.bikegarage.dto.input.ReviewInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.dto.output.ReviewOutputDto;
 import com.example.bikegarage.service.ReviewService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,7 +29,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createReview(@RequestBody ReviewInputDto reviewInputDto, @PathVariable Long rideId, BindingResult br) {
+    public ResponseEntity<Object> createReview(@Valid @RequestBody ReviewInputDto reviewInputDto, @PathVariable Long rideId, BindingResult br) {
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -45,7 +46,7 @@ public class ReviewController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> updateReview(@RequestBody ReviewInputDto
+    public ResponseEntity<Object> updateReview(@Valid @RequestBody ReviewInputDto
                                                        reviewInputDto, @PathVariable Long rideId, BindingResult br) {
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
