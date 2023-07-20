@@ -11,17 +11,18 @@ import java.util.Date;
 
 public class RideInputDto {
     @NotNull(message = "Title is required!")
+    @Size(max = 50, message = "The title can only be 50 characters long.")
     public String titleRide;
-    @Size(max = 200, message = "The subtitle can only be 200 characters long.")
+    @Size(max = 400, message = "The subtitle can only be 400 characters long.")
     public String subTitleRide;
     @NotNull(message = "Distance is required")
     @Positive(message = "Distance must be higher than zero")
     public Double distance;
     public Duration timeRide;
+    @Positive(message = "Average power must be positive")
     public Long averagePower;
+    @Positive(message = "Normalized power must be positive")
     public Long normalizedPower;
-
-//    TODO hier nog naar kijken, de datum werkt gewoon als ie in de teokomst is.
     @NotNull
     @PastOrPresent(message = "The date can't be in the future")
     public LocalDateTime date;
