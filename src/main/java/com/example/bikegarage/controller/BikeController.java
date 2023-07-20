@@ -3,6 +3,7 @@ package com.example.bikegarage.controller;
 import com.example.bikegarage.dto.input.BikeInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
 import com.example.bikegarage.service.BikeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,7 +41,7 @@ public class BikeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createBike(@RequestBody BikeInputDto bikeInputDto, @RequestParam String username, BindingResult br){
+    public ResponseEntity<Object> createBike(@Valid @RequestBody BikeInputDto bikeInputDto, @RequestParam String username, BindingResult br){
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -58,7 +59,7 @@ public class BikeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateBike(@PathVariable Long id, @RequestBody BikeInputDto newBikeInputDto, BindingResult br ){
+    public ResponseEntity<Object> updateBike(@PathVariable Long id, @Valid @RequestBody BikeInputDto newBikeInputDto, BindingResult br ){
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
