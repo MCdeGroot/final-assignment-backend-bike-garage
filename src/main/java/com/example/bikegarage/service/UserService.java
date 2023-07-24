@@ -50,7 +50,7 @@ public class UserService {
         }
     }
 
-    public User getUser(String username) throws UsernameNotFoundException{
+    public User getUser(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
         return user;
@@ -92,7 +92,7 @@ public class UserService {
         }
         for (User user : users
         ) {
-           usernames.add(user.getUsername());
+            usernames.add(user.getUsername());
         }
         return usernames;
     }
@@ -116,22 +116,29 @@ public class UserService {
         return transferUserModelToUserOutputDto(userUpdate);
     }
 
-//    @PreAuthorize("#username==authentication.getName()")
+    @PreAuthorize("#username==authentication.getName()")
     public UserOutputDto assignTrainer(String cyclistUsername, AddTrainerInputDTO addTrainerInputDTO) throws RecordNotFoundException {
         Optional<User> cyclistOptional = userRepository.findByUsername(cyclistUsername);
-        Optional<User> trainerOptional = userRepository.findByUsername(addTrainerInputDTO.trainerUsername);
         User cyclist = cyclistOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + cyclistUsername + " in the database!"));
-        User trainer = trainerOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + addTrainerInputDTO.trainerUsername + " in the database!"));
 
-        cyclist.setTrainer(trainer);
-        trainer.addAuthority(new Authority(trainer.getUsername(), "ROLE_TRAINER"));
+        // Controleer of de gebruiker al een trainer heeft toegewezen
+        if (cyclist.getTrainer() != null) {
+            throw new IllegalStateException("The user already has a trainer assigned.");
+        }
+
+        Optional<User> trainerOptional = userRepository.findByUsername(addTrainerInputDTO.trainerUsername);
+        User newTrainer = trainerOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + addTrainerInputDTO.trainerUsername + " in the database!"));
+
+        cyclist.addAuthority(new Authority(cyclist.getUsername(), "ROLE_TRAINER"));
+        cyclist.setTrainer(newTrainer);
+
         userRepository.save(cyclist);
-        userRepository.save(trainer);
 
         return transferUserModelToUserOutputDto(cyclist);
     }
+
     @PreAuthorize("#username==authentication.getName()")
-    public String updatePassword(String username, PasswordInputDto passwordInputDto) throws RecordNotFoundException{
+    public String updatePassword(String username, PasswordInputDto passwordInputDto) throws RecordNotFoundException {
 
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
@@ -139,9 +146,10 @@ public class UserService {
         // authenticatie voor een ingelogde user om te kijken of hij dit wel mag wijzigen.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!(authentication instanceof AnonymousAuthenticationToken)){
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
             boolean hasAuthority = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
-            if (!hasAuthority){ throw new ForbiddenException("Looks like you don't have the right authority to do this.");
+            if (!hasAuthority) {
+                throw new ForbiddenException("Looks like you don't have the right authority to do this.");
             }
         }
         user.setPassword(passwordEncoder.encode(passwordInputDto.newPassword));
@@ -211,8 +219,8 @@ public class UserService {
         userOutputDto.apikey = user.getApikey();
         userOutputDto.authorities = user.getAuthorities();
         userOutputDto.cyclists = user.getCyclists();
-        if (user.getTrainer() != null){
-        userOutputDto.trainerUsername = user.getTrainer().getUsername();
+        if (user.getTrainer() != null) {
+            userOutputDto.trainerUsername = user.getTrainer().getUsername();
         }
 
         return userOutputDto;
