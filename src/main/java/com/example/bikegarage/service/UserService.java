@@ -84,6 +84,20 @@ public class UserService {
         return allCyclistsOutputDto;
     }
 
+    public List<String> getAllUsernames() throws RecordNotFoundException {
+        List<String> usernames = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty()) {
+            throw new RecordNotFoundException("There are no users in the database!");
+        }
+        for (User user : users
+        ) {
+           usernames.add(user.getUsername());
+        }
+        return usernames;
+    }
+
+
     public UserOutputDto createUser(UserInputDto userInputDto) {
         userInputDto.setApikey(RandomStringGenerator.generateAlphaNumeric(20));
         User user = transferUserInputDtoToUser(userInputDto);

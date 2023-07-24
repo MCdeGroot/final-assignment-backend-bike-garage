@@ -42,6 +42,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllCyclistsOfTrainer(trainerUsername), HttpStatus.OK);
     }
 
+    @GetMapping("/cyclists")
+    public ResponseEntity<List<String>> getAllUsernames() {
+        return new ResponseEntity<>(userService.getAllUsernames(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
         if (br.hasFieldErrors()) {
