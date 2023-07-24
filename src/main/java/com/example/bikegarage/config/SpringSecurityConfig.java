@@ -106,6 +106,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET,"/users").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.GET,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.GET, "/users/cyclists/{trainerUsername}").hasAnyRole("TRAINER")
+                .requestMatchers(HttpMethod.GET, "/users/cyclists").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.GET,"/users/{username}/authorities").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.PUT,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/users/assign-trainer/{cyclistUsername}").hasAnyRole("USER")
