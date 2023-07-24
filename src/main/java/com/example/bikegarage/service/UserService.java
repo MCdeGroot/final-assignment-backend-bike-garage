@@ -116,23 +116,19 @@ public class UserService {
         return transferUserModelToUserOutputDto(userUpdate);
     }
 
-    @PreAuthorize("#username==authentication.getName()")
     public UserOutputDto assignTrainer(String cyclistUsername, AddTrainerInputDTO addTrainerInputDTO) throws RecordNotFoundException {
         Optional<User> cyclistOptional = userRepository.findByUsername(cyclistUsername);
         User cyclist = cyclistOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + cyclistUsername + " in the database!"));
-
-        // Controleer of de gebruiker al een trainer heeft toegewezen
         if (cyclist.getTrainer() != null) {
             throw new IllegalStateException("The user already has a trainer assigned.");
         }
-
         Optional<User> trainerOptional = userRepository.findByUsername(addTrainerInputDTO.trainerUsername);
-        User newTrainer = trainerOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + addTrainerInputDTO.trainerUsername + " in the database!"));
+        User trainer = trainerOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + addTrainerInputDTO.trainerUsername + " in the database!"));
 
-        cyclist.addAuthority(new Authority(cyclist.getUsername(), "ROLE_TRAINER"));
-        cyclist.setTrainer(newTrainer);
-
+        cyclist.setTrainer(trainer);
+        trainer.addAuthority(new Authority(trainer.getUsername(), "ROLE_TRAINER"));
         userRepository.save(cyclist);
+        userRepository.save(trainer);
 
         return transferUserModelToUserOutputDto(cyclist);
     }
