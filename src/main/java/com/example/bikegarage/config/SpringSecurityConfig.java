@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 /*  Deze security is niet de enige manier om het te doen.
     In de andere branch van deze github repo staat een ander voorbeeld
@@ -78,7 +77,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/bikeparts").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.GET, "/bikeparts/{id}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.POST, "/bikeparts").hasAnyRole("USER")
-                .requestMatchers(HttpMethod.PUT, "/bikeparts").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.PUT, "/bikeparts/{id}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.DELETE, "/bikeparts/{id}").hasAnyRole("USER","ADMIN")
                 //-----------Endpoint Rides-----------------
                 .requestMatchers(HttpMethod.GET, "/rides").hasAnyRole("ADMIN")
