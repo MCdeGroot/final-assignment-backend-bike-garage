@@ -12,9 +12,7 @@ import com.example.bikegarage.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -97,11 +95,11 @@ public class BikeService {
         bikeOutputDto.brand = bike.getBrand();
         bikeOutputDto.model = bike.getModel();
         bikeOutputDto.name = bike.getName();
+        bikeOutputDto.rides = bike.getRides();
         bikeOutputDto.totalDistanceDriven = getTotalDistanceDriven(bike);
         bikeOutputDto.totalHoursDriven = getTotalHoursDriven(bike);
         bikeOutputDto.bikeType = bike.getBikeType();
         bikeOutputDto.bikeParts = bike.getBikeParts();
-        bikeOutputDto.rides = bike.getRides();
         bikeOutputDto.user = bike.getUser();
         //bikeOutputDto.numberOfRides = bike.getRides().size(); // is dit een goede methode? of beter via frontend?
 
@@ -141,7 +139,7 @@ public class BikeService {
 
     public Double getTotalDistanceDriven(Bike bike) {
         Double totalDistanceDriven = 0.0;
-        List<Ride> rides = bike.getRides();
+        Set<Ride> rides = bike.getRides();
         if (rides != null) {
             for (Ride ride : rides
             ) {
@@ -153,8 +151,7 @@ public class BikeService {
 
     public Duration getTotalHoursDriven(Bike bike) {
         Duration totalHoursDriven = Duration.ZERO;
-        List<Ride> rides = new ArrayList<>();
-        rides = bike.getRides();
+        Set<Ride> rides = bike.getRides();
         if (rides != null) {
             for (Ride ride : rides
             ) {

@@ -23,6 +23,6 @@ public class BikeOutputDto {
     @Enumerated(EnumType.STRING)
     public BikeType bikeType;
     public Set<Part> bikeParts;
-    public List<Ride> rides;
+    public Set<Ride> rides;
     public User user;
 }

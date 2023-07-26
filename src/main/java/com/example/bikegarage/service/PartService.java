@@ -66,7 +66,7 @@ public class PartService {
     public PartOutputDto createBikePart(PartInputDto partInputDto, Long bikeId) {
         Part part = transferPartInputDtoToPart(partInputDto);
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
-        List<Ride> ridesAfterDate = rideRepository.findByDateAfterOrDateEquals(part.getInstallationDate(), LocalDateTime.now());
+        List<Ride> ridesAfterDate = rideRepository.findByBikeAndDateAfterOrDateEquals(bike, part.getInstallationDate(), LocalDateTime.now());
         Double currentDistance = 0.0;
         for (Ride ride : ridesAfterDate) {
             currentDistance += ride.getDistance();
@@ -80,7 +80,7 @@ public class PartService {
     public PartOutputDto updateBikePart(Long id, PartInputDto partInputDto) throws RecordNotFoundException {
         Part bikePart = partRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Bike part with id-number " + id + " cannot be found"));
         Part bikePartUpdate = updatePartInputDtoToPart(partInputDto, bikePart);
-        List<Ride> ridesAfterDate = rideRepository.findByDateAfterOrDateEquals(bikePartUpdate.getInstallationDate(), LocalDateTime.now());
+        List<Ride> ridesAfterDate = rideRepository.findByBikeAndDateAfterOrDateEquals(bikePartUpdate.getBike(),bikePartUpdate.getInstallationDate(), LocalDateTime.now());
         Double currentDistance = 0.0;
         for (Ride ride : ridesAfterDate) {
             currentDistance += ride.getDistance();
