@@ -3,6 +3,7 @@ package com.example.bikegarage.service;
 import com.example.bikegarage.dto.input.AddTrainerInputDTO;
 import com.example.bikegarage.dto.input.PasswordInputDto;
 import com.example.bikegarage.dto.input.UserInputDto;
+import com.example.bikegarage.dto.input.UserUpdateInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
 import com.example.bikegarage.exception.ForbiddenException;
 import com.example.bikegarage.exception.RecordNotFoundException;
@@ -108,10 +109,10 @@ public class UserService {
         return transferUserModelToUserOutputDto(user);
     }
 
-    public UserOutputDto updateUser(String username, UserInputDto userInputDto) throws RecordNotFoundException {
+    public UserOutputDto updateUser(String username, UserUpdateInputDto userUpdateInputDto) throws RecordNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
-        User userUpdate = updateUserInputDtoToUser(userInputDto, user);
+        User userUpdate = updateUserInputDtoToUser(userUpdateInputDto, user);
         userRepository.save(userUpdate);
         return transferUserModelToUserOutputDto(userUpdate);
     }
@@ -222,29 +223,23 @@ public class UserService {
         return userOutputDto;
     }
 
-    public User updateUserInputDtoToUser(UserInputDto userInputDto, User user) {
+    public User updateUserInputDtoToUser(UserUpdateInputDto userUpdateInputDto, User user) {
         // Zorg ervoor dat de username niet wordt gewijzigd. Extra controle, kan ook in de frontend worden opgevangen.
         user.setUsername(user.getUsername());
-        if (userInputDto.password != null) {
-            user.setPassword(userInputDto.password);
+        if (userUpdateInputDto.firstName != null) {
+            user.setFirstName(userUpdateInputDto.firstName);
         }
-        if (userInputDto.firstName != null) {
-            user.setFirstName(userInputDto.firstName);
+        if (userUpdateInputDto.lastName != null) {
+            user.setLastName(userUpdateInputDto.lastName);
         }
-        if (userInputDto.lastName != null) {
-            user.setLastName(userInputDto.lastName);
+        if (userUpdateInputDto.gender != null) {
+            user.setGender(userUpdateInputDto.gender);
         }
-        if (userInputDto.gender != null) {
-            user.setGender(userInputDto.gender);
+        if (userUpdateInputDto.email != null) {
+            user.setEmail(userUpdateInputDto.email);
         }
-        if (userInputDto.email != null) {
-            user.setEmail(userInputDto.email);
-        }
-        if (userInputDto.dateOfBirth != null) {
-            user.setDateOfBirth(userInputDto.dateOfBirth);
-        }
-        if (userInputDto.photoUrl != null) {
-            user.setPhotoUrl(userInputDto.photoUrl);
+        if (userUpdateInputDto.dateOfBirth != null) {
+            user.setDateOfBirth(userUpdateInputDto.dateOfBirth);
         }
         return user;
     }
