@@ -1,4 +1,4 @@
--- 1 user
+-- 3 users
 INSERT INTO users (username, password, email, first_name, last_name, enabled)
 VALUES ('mathijs', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK', 'mathijsdegroot@bikegarage.com',
         'Mathijs', 'de Groot', true),
