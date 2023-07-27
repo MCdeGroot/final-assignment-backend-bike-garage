@@ -3,6 +3,7 @@ package com.example.bikegarage.controller;
 import com.example.bikegarage.dto.input.AddTrainerInputDTO;
 import com.example.bikegarage.dto.input.PasswordInputDto;
 import com.example.bikegarage.dto.input.UserInputDto;
+import com.example.bikegarage.dto.input.UserUpdateInputDto;
 import com.example.bikegarage.dto.output.UserOutputDto;
 import com.example.bikegarage.exception.BadRequestException;
 import com.example.bikegarage.service.UserService;
@@ -64,7 +65,7 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<Object> updateUser(@PathVariable String username, @Valid @RequestBody UserInputDto userInputDto, BindingResult br) {
+    public ResponseEntity<Object> updateUser(@PathVariable String username, @Valid @RequestBody UserUpdateInputDto userUpdateInputDto, BindingResult br) {
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
@@ -74,7 +75,7 @@ public class UserController {
             }
             return ResponseEntity.badRequest().body(sb.toString());
         }
-        UserOutputDto userOutputDto = userService.updateUser(username, userInputDto);
+        UserOutputDto userOutputDto = userService.updateUser(username, userUpdateInputDto);
         return new ResponseEntity<>(userOutputDto, HttpStatus.ACCEPTED);
     }
     @PutMapping("/assign-trainer/{cyclistUsername}")

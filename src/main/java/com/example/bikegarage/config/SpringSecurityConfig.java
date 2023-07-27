@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 /*  Deze security is niet de enige manier om het te doen.
     In de andere branch van deze github repo staat een ander voorbeeld
@@ -67,8 +66,8 @@ public class SpringSecurityConfig {
   //              .requestMatchers("/**").permitAll()
 
                 //-----------Endpoint Bike------------------
-                .requestMatchers(HttpMethod.GET, "/bikes").hasAnyRole("USER","TRAINER","ADMIN")
-                .requestMatchers(HttpMethod.GET, "/bikes/bike-data/{id}").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.GET, "/bikes").hasAnyRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/bikes/bike-data/{id}").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.GET, "/bikes/{username}").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.POST, "/bikes").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.PUT, "/bikes").hasAnyRole("USER","ADMIN")
@@ -78,11 +77,12 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/bikeparts").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.GET, "/bikeparts/{id}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.POST, "/bikeparts").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.PUT, "/bikeparts/{id}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.DELETE, "/bikeparts/{id}").hasAnyRole("USER","ADMIN")
                 //-----------Endpoint Rides-----------------
-                .requestMatchers(HttpMethod.GET, "/rides").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.GET, "/rides").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/rides/ride-data/{id}").hasAnyRole("USER","TRAINER","ADMIN")
-                .requestMatchers(HttpMethod.GET, "/rides/{distance}").hasAnyRole("USER","TRAINER","ADMIN") // navragen hoe dit werkt
+                .requestMatchers(HttpMethod.GET, "/rides/{distance}").hasAnyRole("USER","TRAINER","ADMIN") //hoe doe ik een request params hier aan teovoegen?
                 .requestMatchers(HttpMethod.GET, "/rides/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.POST, "/rides").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.POST, "/rides/{rideId}/photo").hasAnyRole("USER")
@@ -92,11 +92,11 @@ public class SpringSecurityConfig {
                 //-----------Endpoint Review-----------------
                 .requestMatchers(HttpMethod.GET, "/{rideId}/review").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.POST, "/{rideId}/review").hasAnyRole("TRAINER")
-                .requestMatchers(HttpMethod.PUT, "/{rideId}/review").hasAnyRole("TRAINER")
+                .requestMatchers(HttpMethod.PUT, "/{rideId}/review").hasAnyRole("TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/{rideId}/review").hasAnyRole("TRAINER","ADMIN")
 
                 //-----------Endpoint Files-----------------
-                .requestMatchers(HttpMethod.POST, "/upload-file").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.POST, "/upload-file").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.GET, "/download/{fileName}").permitAll()
 
 
