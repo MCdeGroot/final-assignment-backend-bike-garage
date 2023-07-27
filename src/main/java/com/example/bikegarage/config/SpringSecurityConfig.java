@@ -111,7 +111,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.PUT,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/users/assign-trainer/{cyclistUsername}").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.PUT,"/users/updatepassword/{username}").authenticated()
-                .requestMatchers(HttpMethod.DELETE,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.DELETE,"/users/{username}").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/{username}/authorities/{authority}").hasAnyRole("USER","ADMIN")
 
                 // Je mag meerdere paths tegelijk definieren

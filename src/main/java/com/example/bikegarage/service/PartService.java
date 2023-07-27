@@ -3,6 +3,7 @@ package com.example.bikegarage.service;
 import com.example.bikegarage.dto.input.PartInputDto;
 import com.example.bikegarage.dto.input.RideInputDto;
 import com.example.bikegarage.dto.output.PartOutputDto;
+import com.example.bikegarage.exception.ForbiddenException;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.model.Bike;
 import com.example.bikegarage.model.Part;
@@ -10,6 +11,9 @@ import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.repository.BikeRepository;
 import com.example.bikegarage.repository.PartRepository;
 import com.example.bikegarage.repository.RideRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -92,6 +96,12 @@ public class PartService {
 
     public String deletePart(Long id) throws RecordNotFoundException {
         Part part = partRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Part with id-number " + id + " cannot be found"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (!isAdmin && !part.getBike().getUser().getUsername().equals(loggedInUsername)) {
+            throw new ForbiddenException("You are not authorized to delete this bike part.");
+        }
         partRepository.deleteById(id);
         return "Well well I hope you know what you're doing, because you just removed " + part.getPartType() + "!";
     }
