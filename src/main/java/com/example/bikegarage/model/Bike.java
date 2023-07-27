@@ -33,7 +33,7 @@ public class Bike {
     @OneToMany (mappedBy = "bike", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Part> bikeParts;
-    @OneToMany (mappedBy = "bike")
+    @OneToMany (mappedBy = "bike", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnore
     private Set<Ride> rides;
     @ManyToOne

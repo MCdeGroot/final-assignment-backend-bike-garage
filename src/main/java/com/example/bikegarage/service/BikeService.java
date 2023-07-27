@@ -87,17 +87,10 @@ public class BikeService {
         if (!isAdmin && !bike.getUser().getUsername().equals(loggedInUsername)) {
             throw new ForbiddenException("You are not authorized to delete this bike.");
         }
+        bike.getRides().forEach(ride -> ride.setBike(null));
         bikeRepository.deleteById(id);
         return "Well well I hope you know what you're doing, because you just removed " + bike.getName() + "!";
     }
-
-
-    //op een of andere manier kan ik hier geen orElseThrow methode toevoegen.
-//    public BikeOutputDto getBikeByFrameNumberOrId(Long frameNumber, Long Id) throws RecordNotFoundException {
-//        Bike bike = bikeRepository.findBikeByFrameNumberOrId(frameNumber, Id);
-//        return transferBikeModelToBikeOutputDto(bike);
-//    }
-
 
     public BikeOutputDto transferBikeModelToBikeOutputDto(Bike bike) {
         BikeOutputDto bikeOutputDto = new BikeOutputDto();
