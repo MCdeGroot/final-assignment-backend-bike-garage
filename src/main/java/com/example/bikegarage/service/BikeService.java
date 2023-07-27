@@ -2,6 +2,7 @@ package com.example.bikegarage.service;
 
 import com.example.bikegarage.dto.input.BikeInputDto;
 import com.example.bikegarage.dto.output.BikeOutputDto;
+import com.example.bikegarage.exception.ForbiddenException;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.exception.UsernameNotFoundException;
 import com.example.bikegarage.model.Bike;
@@ -9,6 +10,9 @@ import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.BikeRepository;
 import com.example.bikegarage.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -43,6 +47,7 @@ public class BikeService {
         }
         return allBikesOutputDtos;
     }
+
     public List<BikeOutputDto> getAllBikesByUsername(String username) throws RecordNotFoundException {
         List<BikeOutputDto> allBikesOutputDtos = new ArrayList<>();
         Optional<User> userOptional = userRepository.findByUsername(username);
@@ -76,17 +81,16 @@ public class BikeService {
 
     public String deleteBike(Long id) throws RecordNotFoundException {
         Bike bike = bikeRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Bike with id-number" + id + " cannot be found"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (!isAdmin && !bike.getUser().getUsername().equals(loggedInUsername)) {
+            throw new ForbiddenException("You are not authorized to delete this bike.");
+        }
+        bike.getRides().forEach(ride -> ride.setBike(null));
         bikeRepository.deleteById(id);
         return "Well well I hope you know what you're doing, because you just removed " + bike.getName() + "!";
     }
-
-
-    //op een of andere manier kan ik hier geen orElseThrow methode toevoegen.
-//    public BikeOutputDto getBikeByFrameNumberOrId(Long frameNumber, Long Id) throws RecordNotFoundException {
-//        Bike bike = bikeRepository.findBikeByFrameNumberOrId(frameNumber, Id);
-//        return transferBikeModelToBikeOutputDto(bike);
-//    }
-
 
     public BikeOutputDto transferBikeModelToBikeOutputDto(Bike bike) {
         BikeOutputDto bikeOutputDto = new BikeOutputDto();

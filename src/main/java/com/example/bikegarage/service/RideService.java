@@ -3,10 +3,15 @@ package com.example.bikegarage.service;
 
 import com.example.bikegarage.dto.input.RideInputDto;
 import com.example.bikegarage.dto.output.RideOutputDto;
+import com.example.bikegarage.exception.ForbiddenException;
 import com.example.bikegarage.exception.RecordNotFoundException;
 import com.example.bikegarage.exception.UsernameNotFoundException;
 import com.example.bikegarage.model.*;
 import com.example.bikegarage.repository.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -104,6 +109,13 @@ public class RideService {
 
     public String deleteRide(Long id) throws RecordNotFoundException {
         Ride ride = rideRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Ride with id-number" + id + " cannot be found"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        if (!isAdmin && !ride.getUser().getUsername().equals(loggedInUsername)) {
+            throw new ForbiddenException("You are not authorized to delete this ride.");
+        }
         Double distanceDifference = 0.0 - ride.getDistance();
         rideRepository.deleteById(id);
         updateBikeParts(ride, distanceDifference);

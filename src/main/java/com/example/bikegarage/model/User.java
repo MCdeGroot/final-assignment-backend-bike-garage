@@ -34,10 +34,10 @@ public class User {
     @Column
     private Character gender;
     private LocalDate dateOfBirth;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Bike> bikes;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Ride> rides;
     private String photoUrl;

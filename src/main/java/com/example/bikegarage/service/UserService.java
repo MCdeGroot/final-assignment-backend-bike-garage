@@ -39,7 +39,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    @PreAuthorize("#username==authentication.getName()")
+    @PreAuthorize("#username==authentication.getName() or hasRole('ROLE_ADMIN')")
     public UserOutputDto getUserByUsername(String username) throws RecordNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
@@ -116,7 +116,7 @@ public class UserService {
         userRepository.save(userUpdate);
         return transferUserModelToUserOutputDto(userUpdate);
     }
-
+    @PreAuthorize("#cyclistUsername==authentication.getName() or hasRole('ROLE_ADMIN')")
     public UserOutputDto assignTrainer(String cyclistUsername, AddTrainerInputDTO addTrainerInputDTO) throws RecordNotFoundException {
         Optional<User> cyclistOptional = userRepository.findByUsername(cyclistUsername);
         User cyclist = cyclistOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + cyclistUsername + " in the database!"));
@@ -134,27 +134,17 @@ public class UserService {
         return transferUserModelToUserOutputDto(cyclist);
     }
 
-    @PreAuthorize("#username==authentication.getName()")
+    @PreAuthorize("#username==authentication.getName() or hasRole('ROLE_ADMIN')")
     public String updatePassword(String username, PasswordInputDto passwordInputDto) throws RecordNotFoundException {
 
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
-
-        // authenticatie voor een ingelogde user om te kijken of hij dit wel mag wijzigen.
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            boolean hasAuthority = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
-            if (!hasAuthority) {
-                throw new ForbiddenException("Looks like you don't have the right authority to do this.");
-            }
-        }
         user.setPassword(passwordEncoder.encode(passwordInputDto.newPassword));
         userRepository.save(user);
         return "We did it! We changed your password";
 
     }
-
+    @PreAuthorize("#username==authentication.getName() or hasRole('ROLE_ADMIN')")
     public String deleteUser(String username) throws RecordNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
