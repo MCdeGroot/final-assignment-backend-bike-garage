@@ -27,6 +27,7 @@ public class Bike {
     private String brand;
     private String model;
     private String name;
+    private String groupSet;
     @Enumerated(EnumType.STRING)
     private BikeType bikeType;
     @OneToMany (mappedBy = "bike")
