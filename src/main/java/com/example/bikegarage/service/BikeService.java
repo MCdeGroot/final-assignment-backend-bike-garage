@@ -95,13 +95,13 @@ public class BikeService {
         bikeOutputDto.brand = bike.getBrand();
         bikeOutputDto.model = bike.getModel();
         bikeOutputDto.name = bike.getName();
+        bikeOutputDto.groupSet = bike.getGroupSet();
         bikeOutputDto.rides = bike.getRides();
         bikeOutputDto.totalDistanceDriven = getTotalDistanceDriven(bike);
         bikeOutputDto.totalHoursDriven = getTotalHoursDriven(bike);
         bikeOutputDto.bikeType = bike.getBikeType();
         bikeOutputDto.bikeParts = bike.getBikeParts();
         bikeOutputDto.user = bike.getUser();
-        //bikeOutputDto.numberOfRides = bike.getRides().size(); // is dit een goede methode? of beter via frontend?
 
         return bikeOutputDto;
     }
@@ -112,6 +112,7 @@ public class BikeService {
         bike.setBrand(bikeInputDto.brand);
         bike.setModel(bikeInputDto.model);
         bike.setName(bikeInputDto.name);
+        bike.setGroupSet(bikeInputDto.groupSet);
         bike.setBikeType(bikeInputDto.bikeType);
 
         return bike;

@@ -9,7 +9,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Set;
 
 public class BikeOutputDto {
@@ -18,6 +17,7 @@ public class BikeOutputDto {
     public String brand;
     public String model;
     public String name;
+    public String groupSet;
     public Double totalDistanceDriven;
     public Duration totalHoursDriven;
     @Enumerated(EnumType.STRING)

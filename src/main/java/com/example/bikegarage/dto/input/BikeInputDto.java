@@ -20,6 +20,8 @@ public class BikeInputDto {
     public String model;
     @Size(max = 50, message = "The nickname of your bike can only be 50 characters long.")
     public String name;
+    @Size(max = 50, message = "Group set name can only be 50 characters long.")
+    public String groupSet;
     @NotNull
     @Enumerated(EnumType.STRING)
     public BikeType bikeType;

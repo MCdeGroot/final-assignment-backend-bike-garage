@@ -20,11 +20,11 @@ VALUES (100, 'Lekkerrrrrr', 8.0),
 
 
 -- 4 bikes
-INSERT INTO bikes (id, frame_number, brand, model, name, bike_type, user_username)
-VALUES (100, 111111111, 'Giant', 'TCR Advanced PRO', 'Purple rain', 'ROAD', 'mathijs'),
-       (101, 123456789, 'Canyon', 'Speedmax CFR', 'Time wonder', 'TIMETRIAL', 'mathijs'),
-       (102, 987654321, 'Canyon', 'Lux CFR', 'Mounty', 'MOUNTAIN', 'mathijs'),
-       (103, 987654355, 'Canyon', 'Lux CFR', 'Mounty', 'MOUNTAIN', 'piet');
+INSERT INTO bikes (id, frame_number, brand, model, name, group_set, bike_type, user_username)
+VALUES (100, 111111111, 'Giant', 'TCR Advanced PRO', 'Purple rain', 'Shimano Ultegra', 'ROAD', 'mathijs'),
+       (101, 123456789, 'Canyon', 'Speedmax CFR', 'Time wonder', 'Shimano Ultegra DI2','TIMETRIAL', 'mathijs'),
+       (102, 987654321, 'Canyon', 'Lux CFR', 'Mounty', 'Shimano XTR', 'MOUNTAIN', 'mathijs'),
+       (103, 987654355, 'Canyon', 'Lux CFR', 'Mounty', 'SRAM XX1 EAGLE AXS', 'MOUNTAIN', 'piet');
 
 -- 10 rides met Bike 100
 INSERT INTO rides (id, title_ride, sub_title_ride, distance, date, average_power, normalized_power, time_ride, bike_id,
@@ -50,7 +50,7 @@ VALUES (100, 'CHAIN', 1555.0, 4000.0, 100, '2023-06-01'),
        (101, 'CASSETTE', 35.0, 8000.0, 100, '2023-06-01'),
        (102, 'FRONTTIRE', 333.0, 5000.0, 100, '2023-06-01'),
        (103, 'REARTIRE', 717.0, 5000.0, 100, '2023-06-01'),
-       (104, 'FRONTBRAKEPAD', 9000.0, 10000.0, 100, '2023-06-01');
+       (104, 'FRONTBRAKEPAD', 9000.0, 7500.0, 100, '2023-06-01');
 
 -- 5 bikeparts Bike 101
 INSERT INTO bike_parts (id, part_type, current_distance_driven, max_distance, bike_id, installation_date)
