@@ -10,7 +10,7 @@ VALUES ('mathijs', '$2a$12$qKPVx3n3mAVuH2QZUMkrMeuyG/EsuTUlHEH0JXpZmFMNm.IkohUNK
 -- authorities
 INSERT INTO authorities (username, authority)
 VALUES ('mathijs', 'ROLE_USER'),
-       ('mathijs', 'ADMIN'),
+       ('mathijs', 'ROLE_ADMIN'),
        ('piet', 'ROLE_USER'),
        ('kees', 'ROLE_USER');
 
