@@ -134,5 +134,4 @@ public class UserController {
         userService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }
-
 }
