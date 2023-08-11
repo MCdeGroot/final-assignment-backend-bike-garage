@@ -69,15 +69,15 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/bikes").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/bikes/bike-data/{id}").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.GET, "/bikes/{username}").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.POST, "/bikes").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.POST, "/bikes").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/bikes").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/bikes/{id}").hasAnyRole("USER","ADMIN")
 
                 //-----------Endpoint BikeParts------------------
-                .requestMatchers(HttpMethod.GET, "/bikeparts").hasAnyRole("USER")
-                .requestMatchers(HttpMethod.GET, "/bikeparts/{id}").hasAnyRole("USER")
-                .requestMatchers(HttpMethod.POST, "/bikeparts").hasAnyRole("USER")
-                .requestMatchers(HttpMethod.PUT, "/bikeparts/{id}").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.GET, "/bikeparts").hasAnyRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/bikeparts/{id}").hasAnyRole("USER","ADMIN")
+                .requestMatchers(HttpMethod.POST, "/bikeparts").hasAnyRole("USER","ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/bikeparts/{id}").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/bikeparts/{id}").hasAnyRole("USER","ADMIN")
                 //-----------Endpoint Rides-----------------
                 .requestMatchers(HttpMethod.GET, "/rides").hasAnyRole("ADMIN")
@@ -103,7 +103,7 @@ public class SpringSecurityConfig {
                 //-----------Endpoint Users-----------------
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST,"/users/{username}/authorities").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.GET,"/users").hasAnyRole("USER","TRAINER","ADMIN")
+                .requestMatchers(HttpMethod.GET,"/users").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,"/users/{username}").hasAnyRole("USER","TRAINER","ADMIN")
                 .requestMatchers(HttpMethod.GET, "/users/cyclists/{trainerUsername}").hasAnyRole("TRAINER")
                 .requestMatchers(HttpMethod.GET, "/users/cyclists").hasAnyRole("USER")
