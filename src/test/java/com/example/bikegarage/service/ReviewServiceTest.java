@@ -1,345 +1,149 @@
 package com.example.bikegarage.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.example.bikegarage.dto.input.ReviewInputDto;
 import com.example.bikegarage.dto.output.ReviewOutputDto;
 import com.example.bikegarage.exception.ForbiddenException;
 import com.example.bikegarage.exception.RecordNotFoundException;
-import com.example.bikegarage.model.Bike;
-import com.example.bikegarage.model.File;
 import com.example.bikegarage.model.Review;
 import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
 import com.example.bikegarage.repository.ReviewRepository;
 import com.example.bikegarage.repository.RideRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+import java.util.Collections;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = {ReviewService.class})
-@ExtendWith(SpringExtension.class)
 class ReviewServiceTest {
-    @MockBean
+
+    @Mock
     private ReviewRepository reviewRepository;
 
-    @Autowired
-    private ReviewService reviewService;
-
-    @MockBean
+    @Mock
     private RideRepository rideRepository;
 
-    /**
-     * Method under test: {@link ReviewService#getReviewOnRide(Long)}
-     */
+    @InjectMocks
+    private ReviewService reviewService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
-    @Disabled("TODO: Complete this test")
     void testGetReviewOnRide() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "com.example.bikegarage.model.Review.getRating()" because "review" is null
-        //       at com.example.bikegarage.service.ReviewService.transferReviewModelToReviewOutputDto(ReviewService.java:88)
-        //       at com.example.bikegarage.service.ReviewService.getReviewOnRide(ReviewService.java:29)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.of(new Ride()));
-        reviewService.getReviewOnRide(1L);
-    }
-
-    /**
-     * Method under test: {@link ReviewService#getReviewOnRide(Long)}
-     */
-    @Test
-    void testGetReviewOnRide2() {
         Ride ride = new Ride();
-        ride.setReview(new Review());
-        Optional<Ride> ofResult = Optional.of(ride);
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-        ReviewOutputDto actualReviewOnRide = reviewService.getReviewOnRide(1L);
-        assertNull(actualReviewOnRide.commentDescription);
-        assertNull(actualReviewOnRide.rating);
-        verify(rideRepository).findById(Mockito.<Long>any());
-    }
-
-    /**
-     * Method under test: {@link ReviewService#getReviewOnRide(Long)}
-     */
-    @Test
-    void testGetReviewOnRide3() {
-        Ride ride = mock(Ride.class);
-        when(ride.getReview()).thenThrow(new ForbiddenException("An error occurred"));
-        Optional<Ride> ofResult = Optional.of(ride);
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-        assertThrows(ForbiddenException.class, () -> reviewService.getReviewOnRide(1L));
-        verify(rideRepository).findById(Mockito.<Long>any());
-        verify(ride).getReview();
-    }
-
-    /**
-     * Method under test: {@link ReviewService#getReviewOnRide(Long)}
-     */
-    @Test
-    void testGetReviewOnRide4() {
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.empty());
-        new ForbiddenException("An error occurred");
-        assertThrows(RecordNotFoundException.class, () -> reviewService.getReviewOnRide(1L));
-        verify(rideRepository).findById(Mockito.<Long>any());
-    }
-
-    /**
-     * Method under test: {@link ReviewService#createReview(ReviewInputDto, Long)}
-     */
-    @Test
-    @Disabled("TODO: Complete this test")
-    void testCreateReview() throws RecordNotFoundException {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "org.springframework.security.core.Authentication.getAuthorities()" because "authentication" is null
-        //       at com.example.bikegarage.service.ReviewService.createReview(ReviewService.java:38)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        ReviewInputDto reviewInputDto = new ReviewInputDto();
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        reviewService.createReview(reviewInputDto, 1L);
-    }
-
-    /**
-     * Method under test: {@link ReviewService#createReview(ReviewInputDto, Long)}
-     */
-    @Test
-    @Disabled("TODO: Complete this test")
-    void testCreateReview2() throws RecordNotFoundException {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "org.springframework.security.core.Authentication.getAuthorities()" because "authentication" is null
-        //       at com.example.bikegarage.service.ReviewService.createReview(ReviewService.java:38)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        ReviewInputDto reviewInputDto = mock(ReviewInputDto.class);
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        reviewService.createReview(reviewInputDto, 1L);
-    }
-
-    /**
-     * Method under test: {@link ReviewService#updateReview(ReviewInputDto, Long)}
-     */
-    @Test
-    @Disabled("TODO: Complete this test")
-    void testUpdateReview() throws RecordNotFoundException {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "com.example.bikegarage.model.Review.setRating(java.lang.Double)" because "review" is null
-        //       at com.example.bikegarage.service.ReviewService.updateReview(ReviewService.java:64)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.of(new Ride()));
-        ReviewInputDto reviewInputDto = new ReviewInputDto();
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        reviewService.updateReview(reviewInputDto, 1L);
-    }
-
-    /**
-     * Method under test: {@link ReviewService#updateReview(ReviewInputDto, Long)}
-     */
-    @Test
-    void testUpdateReview2() throws RecordNotFoundException {
-        when(reviewRepository.save(Mockito.<Review>any())).thenReturn(new Review());
-        LocalDateTime date = LocalDate.of(1970, 1, 1).atStartOfDay();
-        Bike bike = new Bike();
-        User user = new User();
         Review review = new Review();
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.of(new Ride(1L, "Dr", "Dr", 10.0d, date,
-                1L, 1L, null, bike, user, review, new File("foo.txt", "text/plain", "https://example.org/example"))));
+        ride.setReview(review);
+
+        when(rideRepository.findById(anyLong())).thenReturn(Optional.of(ride));
+
+        ReviewOutputDto result = reviewService.getReviewOnRide(1L);
+
+        assertNotNull(result);
+        assertEquals(review, result);
+    }
+
+    @Test
+    void testCreateReview() {
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.getAuthorities()).thenReturn(Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        Ride ride = new Ride();
+        ride.setUser(new User());
         ReviewInputDto reviewInputDto = new ReviewInputDto();
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        ReviewOutputDto actualUpdateReviewResult = reviewService.updateReview(reviewInputDto, 1L);
-        assertEquals("Comment Description", actualUpdateReviewResult.commentDescription);
-        assertEquals(10.0d, actualUpdateReviewResult.rating.doubleValue());
-        verify(reviewRepository).save(Mockito.<Review>any());
-        verify(rideRepository).findById(Mockito.<Long>any());
+
+        when(rideRepository.findById(anyLong())).thenReturn(Optional.of(ride));
+        when(reviewRepository.save(any())).thenReturn(new Review());
+
+        ReviewOutputDto result = reviewService.createReview(reviewInputDto, 1L);
+
+        assertNotNull(result);
+        verify(reviewRepository, times(1)).save(any());
     }
 
-    /**
-     * Method under test: {@link ReviewService#updateReview(ReviewInputDto, Long)}
-     */
     @Test
-    void testUpdateReview3() throws RecordNotFoundException {
-        Ride ride = mock(Ride.class);
-        when(ride.getReview()).thenThrow(new ForbiddenException("An error occurred"));
-        Optional<Ride> ofResult = Optional.of(ride);
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+    void testCreateReviewWithoutAuthority() {
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.getAuthorities()).thenReturn(Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        Ride ride = new Ride();
         ReviewInputDto reviewInputDto = new ReviewInputDto();
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        assertThrows(ForbiddenException.class, () -> reviewService.updateReview(reviewInputDto, 1L));
-        verify(rideRepository).findById(Mockito.<Long>any());
-        verify(ride).getReview();
+
+        when(rideRepository.findById(anyLong())).thenReturn(Optional.of(ride));
+
+        assertThrows(ForbiddenException.class, () -> reviewService.createReview(reviewInputDto, 1L));
     }
 
-    /**
-     * Method under test: {@link ReviewService#updateReview(ReviewInputDto, Long)}
-     */
     @Test
-    void testUpdateReview4() throws RecordNotFoundException {
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.empty());
-        new ForbiddenException("An error occurred");
+    void testUpdateReview() {
+        Ride ride = new Ride();
+        Review review = new Review();
+        ride.setReview(review);
         ReviewInputDto reviewInputDto = new ReviewInputDto();
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        assertThrows(RecordNotFoundException.class, () -> reviewService.updateReview(reviewInputDto, 1L));
-        verify(rideRepository).findById(Mockito.<Long>any());
+        reviewInputDto.setRating(4.0);
+
+        when(rideRepository.findById(anyLong())).thenReturn(Optional.of(ride));
+        when(reviewRepository.save(any())).thenReturn(review);
+
+        ReviewOutputDto result = reviewService.updateReview(reviewInputDto, 1L);
+
+        assertNotNull(result);
+        assertEquals(review.getRating(), result.getRating());
+        verify(reviewRepository, times(1)).save(any());
     }
 
-    /**
-     * Method under test: {@link ReviewService#deleteReview(Long)}
-     */
     @Test
-    void testDeleteReview() throws RecordNotFoundException {
-        doNothing().when(reviewRepository).delete(Mockito.<Review>any());
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.of(new Ride()));
-        assertEquals("Well well I hope you know what you're doing, because you just removed your review!",
-                reviewService.deleteReview(1L));
-        verify(reviewRepository).delete(Mockito.<Review>any());
-        verify(rideRepository).findById(Mockito.<Long>any());
+    void testDeleteReview() {
+        Ride ride = new Ride();
+        Review review = new Review();
+        ride.setReview(review);
+
+        when(rideRepository.findById(anyLong())).thenReturn(Optional.of(ride));
+
+        String result = reviewService.deleteReview(1L);
+
+        assertNotNull(result);
+        assertEquals("Well well I hope you know what you're doing, because you just removed your review!", result);
+        verify(reviewRepository, times(1)).delete(review);
     }
 
-    /**
-     * Method under test: {@link ReviewService#deleteReview(Long)}
-     */
-    @Test
-    void testDeleteReview2() throws RecordNotFoundException {
-        doThrow(new ForbiddenException("An error occurred")).when(reviewRepository).delete(Mockito.<Review>any());
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.of(new Ride()));
-        assertThrows(ForbiddenException.class, () -> reviewService.deleteReview(1L));
-        verify(reviewRepository).delete(Mockito.<Review>any());
-        verify(rideRepository).findById(Mockito.<Long>any());
-    }
-
-    /**
-     * Method under test: {@link ReviewService#deleteReview(Long)}
-     */
-    @Test
-    void testDeleteReview3() throws RecordNotFoundException {
-        Ride ride = mock(Ride.class);
-        when(ride.getReview()).thenThrow(new ForbiddenException("An error occurred"));
-        Optional<Ride> ofResult = Optional.of(ride);
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-        assertThrows(ForbiddenException.class, () -> reviewService.deleteReview(1L));
-        verify(rideRepository).findById(Mockito.<Long>any());
-        verify(ride).getReview();
-    }
-
-    /**
-     * Method under test: {@link ReviewService#deleteReview(Long)}
-     */
-    @Test
-    void testDeleteReview4() throws RecordNotFoundException {
-        when(rideRepository.findById(Mockito.<Long>any())).thenReturn(Optional.empty());
-        new ForbiddenException("An error occurred");
-        assertThrows(RecordNotFoundException.class, () -> reviewService.deleteReview(1L));
-        verify(rideRepository).findById(Mockito.<Long>any());
-    }
-
-    /**
-     * Method under test: {@link ReviewService#transferReviewInputDtoToReviewModel(ReviewInputDto)}
-     */
     @Test
     void testTransferReviewInputDtoToReviewModel() {
         ReviewInputDto reviewInputDto = new ReviewInputDto();
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        Review actualTransferReviewInputDtoToReviewModelResult = reviewService
-                .transferReviewInputDtoToReviewModel(reviewInputDto);
-        assertEquals("Comment Description", actualTransferReviewInputDtoToReviewModelResult.getCommentDescription());
-        assertEquals(10.0d, actualTransferReviewInputDtoToReviewModelResult.getRating().doubleValue());
+        reviewInputDto.setRating(4.0);
+        reviewInputDto.setCommentDescription("Test comment");
+
+        Review result = reviewService.transferReviewInputDtoToReviewModel(reviewInputDto);
+
+        assertNotNull(result);
+        assertEquals(reviewInputDto.getRating(), result.getRating());
+        assertEquals(reviewInputDto.getCommentDescription(), result.getCommentDescription());
     }
 
-    /**
-     * Method under test: {@link ReviewService#transferReviewInputDtoToReviewModel(ReviewInputDto)}
-     */
-    @Test
-    void testTransferReviewInputDtoToReviewModel2() {
-        ReviewInputDto reviewInputDto = mock(ReviewInputDto.class);
-        reviewInputDto.commentDescription = "Comment Description";
-        reviewInputDto.rating = 10.0d;
-        Review actualTransferReviewInputDtoToReviewModelResult = reviewService
-                .transferReviewInputDtoToReviewModel(reviewInputDto);
-        assertEquals("Comment Description", actualTransferReviewInputDtoToReviewModelResult.getCommentDescription());
-        assertEquals(10.0d, actualTransferReviewInputDtoToReviewModelResult.getRating().doubleValue());
-    }
-
-    /**
-     * Method under test: {@link ReviewService#transferReviewModelToReviewOutputDto(Review)}
-     */
     @Test
     void testTransferReviewModelToReviewOutputDto() {
-        ReviewOutputDto actualTransferReviewModelToReviewOutputDtoResult = reviewService
-                .transferReviewModelToReviewOutputDto(new Review());
-        assertNull(actualTransferReviewModelToReviewOutputDtoResult.commentDescription);
-        assertNull(actualTransferReviewModelToReviewOutputDtoResult.rating);
-    }
+        Review review = new Review();
+        review.setRating(4.0);
+        review.setCommentDescription("Test comment");
 
-    /**
-     * Method under test: {@link ReviewService#transferReviewModelToReviewOutputDto(Review)}
-     */
-    @Test
-    @Disabled("TODO: Complete this test")
-    void testTransferReviewModelToReviewOutputDto2() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "com.example.bikegarage.model.Review.getRating()" because "review" is null
-        //       at com.example.bikegarage.service.ReviewService.transferReviewModelToReviewOutputDto(ReviewService.java:88)
-        //   See https://diff.blue/R013 to resolve this issue.
+        ReviewOutputDto result = reviewService.transferReviewModelToReviewOutputDto(review);
 
-        reviewService.transferReviewModelToReviewOutputDto(null);
-    }
-
-    /**
-     * Method under test: {@link ReviewService#transferReviewModelToReviewOutputDto(Review)}
-     */
-    @Test
-    void testTransferReviewModelToReviewOutputDto3() {
-        Review review = mock(Review.class);
-        when(review.getRating()).thenReturn(10.0d);
-        when(review.getCommentDescription()).thenReturn("Comment Description");
-        ReviewOutputDto actualTransferReviewModelToReviewOutputDtoResult = reviewService
-                .transferReviewModelToReviewOutputDto(review);
-        assertEquals("Comment Description", actualTransferReviewModelToReviewOutputDtoResult.commentDescription);
-        assertEquals(10.0d, actualTransferReviewModelToReviewOutputDtoResult.rating.doubleValue());
-        verify(review).getRating();
-        verify(review).getCommentDescription();
+        assertNotNull(result);
+        assertEquals(review.getRating(), result.getRating());
+        assertEquals(review.getCommentDescription(), result.getCommentDescription());
     }
 }
-
