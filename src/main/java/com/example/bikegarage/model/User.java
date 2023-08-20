@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 
 import java.time.LocalDate;
@@ -60,6 +61,9 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
+
+    public User(String username, String password, List<GrantedAuthority> authorities) {
+    }
 
     //getters setters
     public Set<Authority> getAuthorities() {
