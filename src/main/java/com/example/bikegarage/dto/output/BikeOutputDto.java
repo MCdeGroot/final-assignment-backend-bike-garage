@@ -7,10 +7,14 @@ import com.example.bikegarage.model.Ride;
 import com.example.bikegarage.model.User;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Duration;
 import java.util.Set;
 
+@Getter
+@Setter
 public class BikeOutputDto {
     public Long id;
     public Long frameNumber;
