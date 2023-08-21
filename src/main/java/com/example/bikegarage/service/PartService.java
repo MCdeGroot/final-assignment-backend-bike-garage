@@ -40,7 +40,7 @@ public class PartService {
         return transferPartModelToPartOutputDto(part);
     }
 
-    public static List<PartOutputDto> getAllParts() throws RecordNotFoundException {
+    public List<PartOutputDto> getAllParts() throws RecordNotFoundException {
         List<PartOutputDto> allPartsOutputDtos = new ArrayList<>();
         List<Part> bikeParts = partRepository.findAll();
 
