@@ -43,7 +43,6 @@ public class PartService {
     public List<PartOutputDto> getAllParts() throws RecordNotFoundException {
         List<PartOutputDto> allPartsOutputDtos = new ArrayList<>();
         List<Part> bikeParts = partRepository.findAll();
-
         if (bikeParts.isEmpty()) {
             throw new RecordNotFoundException("I'm sorry but it looks like you don't have any parts.");
         }
@@ -57,7 +56,6 @@ public class PartService {
         List<PartOutputDto> allPartsByBikeOutputDtos = new ArrayList<>();
         Bike bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RecordNotFoundException("Bike with id-number " + bikeId + " cannot be found"));
         Set<Part> bikeParts = bike.getBikeParts();
-
         if (bikeParts.isEmpty()) {
             throw new RecordNotFoundException("I'm sorry but it looks like you don't have any parts on this bike.");
         }
@@ -106,8 +104,6 @@ public class PartService {
         return "Well well I hope you know what you're doing, because you just removed " + part.getPartType() + "!";
     }
 
-
-    // List<Ride> rides = rideRepository.findAllByDateAfterOrDateEquals(part.getInstallationDate());
     public PartOutputDto transferPartModelToPartOutputDto(Part part) {
         PartOutputDto partOutputDto = new PartOutputDto();
         partOutputDto.id = part.getId();
@@ -125,11 +121,8 @@ public class PartService {
         part.setPartType(partInputDto.partType);
         part.setMaxDistance(partInputDto.maxDistance);
         part.setInstallationDate(partInputDto.installationDate);
-
         return part;
     }
-
-    //Methods
 
     public Part updatePartInputDtoToPart(PartInputDto partInputDto, Part part) {
         if (partInputDto.partType != null) {
@@ -143,8 +136,6 @@ public class PartService {
         }
         return part;
     }
-
-
 }
 
 

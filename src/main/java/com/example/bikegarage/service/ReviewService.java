@@ -29,9 +29,7 @@ public class ReviewService {
         return transferReviewModelToReviewOutputDto(ride.getReview());
     }
 
-
     public ReviewOutputDto createReview(ReviewInputDto reviewInputDto, Long rideId) throws RecordNotFoundException {
-
         // authenticatie voor een ingelogde user om te kijken of hij dit wel mag wijzigen.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -40,14 +38,12 @@ public class ReviewService {
                 throw new ForbiddenException("Looks like you don't have the right authority to do this.");
             }
         }
-
         Ride ride = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RecordNotFoundException("Ride with id " + rideId + " cannot be found"));
         User trainer = ride.getUser().getTrainer();
         if (trainer == null || !trainer.getUsername().equals(authentication.getName())) {
             throw new ForbiddenException("You are not authorized to create a review for this ride.");
         }
-
         Review review = transferReviewInputDtoToReviewModel(reviewInputDto);
         review.setRide(ride);
         reviewRepository.save(review);
@@ -89,5 +85,4 @@ public class ReviewService {
         reviewOutputDto.commentDescription = review.getCommentDescription();
         return reviewOutputDto;
     }
-
 }

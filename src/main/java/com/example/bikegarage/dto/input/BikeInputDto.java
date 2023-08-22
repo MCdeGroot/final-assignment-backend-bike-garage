@@ -26,8 +26,4 @@ public class BikeInputDto {
     @Enumerated(EnumType.STRING)
     public BikeType bikeType;
 
-    // ik vraag mij dus af of dit nodig is voor een Input DTO. Vragen aan PAUL
-   // public Set<BikePart> bikeParts;
-   // public ArrayList<Ride> rides;
-
 }

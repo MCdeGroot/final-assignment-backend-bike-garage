@@ -168,9 +168,3 @@ public class BikeService {
 
 }
 
-
-//Uitzoekwerk:
-//- Hoe krijg ik mijn arraylist van rides een waarde eruit zodat dit kan weergegeven worden in mijn app? is dit uberhaubt wel nodig? Want wellicht kan ik ook gewoon de arraylist returnen en dan via mij frontend met een GET-request de size van de array weergeven op mijn pagina?
-//- de Totaldistancedriven, dit is een som van mijn rides. Waar moet ik dit soort dingen schrijven om hier een methode voor te maken die dit berekent?
-//- op een of andere manier moet ik per se een List ipv Arraylist defineiren voor mij bikeparts en rides. Morgen Aan PAUL vragen/
-

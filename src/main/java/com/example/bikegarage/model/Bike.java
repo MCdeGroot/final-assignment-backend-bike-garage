@@ -38,8 +38,4 @@ public class Bike {
     private Set<Ride> rides;
     @ManyToOne
     private User user;
-
-// private ?? imageBike;
-
-
 }

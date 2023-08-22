@@ -41,8 +41,4 @@ public class Ride {
     private Review review;
     @OneToOne
     private File file;
-
-
-    //wellicht strava koppeling nog toevoegen
-
 }
