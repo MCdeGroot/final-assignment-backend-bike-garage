@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "bike_parts")
 public class Part {
-
     @Id
     @GeneratedValue
     private Long id;
@@ -27,10 +26,6 @@ public class Part {
     @ManyToOne
     private Bike bike;
     private LocalDateTime installationDate;
-
-    //methods
-
-    //Methods
 
     //Method to calculate the current distance
     public void updateCurrentDistanceDriven(Double distance) {

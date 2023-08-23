@@ -17,9 +17,7 @@ import lombok.Setter;
 public class File {
     @Id
     private String fileName;
-
     private String contentType;
-
     private String url;
 
 }

@@ -25,7 +25,6 @@ public class FileService {
     private final String fileStorageLocation;
     private final FileRepository fileRepository;
 
-
     public FileService(@Value("${my.upload_location}") String fileStorageLocation, FileRepository fileRepository) {
         fileStoragePath = Paths.get(fileStorageLocation).toAbsolutePath().normalize();
         this.fileStorageLocation = fileStorageLocation;
@@ -37,10 +36,9 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public String storeFile(MultipartFile file, String url){
+    public String storeFile(MultipartFile file, String url) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         Path filePath = Paths.get(fileStoragePath + "\\" + fileName);
-
         try {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -59,8 +57,7 @@ public class FileService {
         } catch (MalformedURLException e) {
             throw new RuntimeException("Issue in reading the file", e);
         }
-
-        if(resource.exists()&& resource.isReadable()) {
+        if (resource.exists() && resource.isReadable()) {
             return resource;
         } else {
             throw new RuntimeException("the file doesn't exist or not readable");

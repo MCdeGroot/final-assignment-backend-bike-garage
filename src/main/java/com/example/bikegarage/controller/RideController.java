@@ -60,8 +60,6 @@ public class RideController {
             return ResponseEntity.badRequest().body(sb.toString());
         }
         RideOutputDto rideOutputDto = rideService.createRide(rideInputDto, bikeId);
-
-        //hiermee creeer je het pad waarin het object wordt opgeslagen. maar snap niet hoe dit werk!!!!
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + rideOutputDto).toUriString());
         return ResponseEntity.created(uri).body(rideOutputDto);
     }

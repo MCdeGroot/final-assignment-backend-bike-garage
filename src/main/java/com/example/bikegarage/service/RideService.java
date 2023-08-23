@@ -56,7 +56,6 @@ public class RideService {
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
         List<User> cyclists = userRepository.findCyclistsByTrainer(user);
-
         if (cyclists != null) {
             for (User cyclist : cyclists) {
                 if (cyclist.getRides() != null) {
@@ -64,10 +63,8 @@ public class RideService {
                 }
             }
         }
-
         List<Ride> userRides = rideRepository.findAllByUser(user);
         uniqueRides.addAll(userRides);
-
         List<RideOutputDto> allRidesOutputDtos = new ArrayList<>();
         for (Ride ride : uniqueRides) {
             allRidesOutputDtos.add(transferRideModelToRideOutputDto(ride));
@@ -112,7 +109,6 @@ public class RideService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUsername = authentication.getName();
         boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
-
         if (!isAdmin && !ride.getUser().getUsername().equals(loggedInUsername)) {
             throw new ForbiddenException("You are not authorized to delete this ride.");
         }
@@ -125,7 +121,6 @@ public class RideService {
     public void assignFileToRide(String name, Long rideId) throws RecordNotFoundException{
         Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new RecordNotFoundException("Ride with id-number" + rideId + " cannot be found"));;
         File file = fileRepository.findByFileName(name).orElseThrow(() -> new RecordNotFoundException("Can't find the file"));
-
             ride.setFile(file);
             rideRepository.save(ride);
         }
@@ -151,7 +146,6 @@ public class RideService {
         if (ride.getFile() != null){
         rideOutputDto.url = ride.getFile().getUrl();
         }
-
         return rideOutputDto;
     }
 
@@ -171,7 +165,6 @@ public class RideService {
         ride.setTimeRide(rideInputDto.timeRide);
         ride.setBike(rideInputDto.bike);
         ride.setUser(user);
-
         return ride;
     }
 
@@ -191,7 +184,6 @@ public class RideService {
         if (rideInputDto.bike != null) {
             ride.setBike(rideInputDto.bike);
         }
-
         return ride;
     }
 
@@ -203,6 +195,5 @@ public class RideService {
                 partRepository.save(part);
             }
         }
-
     }
 }

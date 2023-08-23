@@ -105,7 +105,6 @@ public class UserService {
         user.addAuthority(new Authority(user.getUsername(), "ROLE_USER"));
         user.setPassword(passwordEncoder.encode(userInputDto.password));
         userRepository.save(user);
-
         return transferUserModelToUserOutputDto(user);
     }
 
@@ -125,18 +124,15 @@ public class UserService {
         }
         Optional<User> trainerOptional = userRepository.findByUsername(addTrainerInputDTO.trainerUsername);
         User trainer = trainerOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + addTrainerInputDTO.trainerUsername + " in the database!"));
-
         cyclist.setTrainer(trainer);
         trainer.addAuthority(new Authority(trainer.getUsername(), "ROLE_TRAINER"));
         userRepository.save(cyclist);
         userRepository.save(trainer);
-
         return transferUserModelToUserOutputDto(cyclist);
     }
 
     @PreAuthorize("#username==authentication.getName() or hasRole('ROLE_ADMIN')")
     public String updatePassword(String username, PasswordInputDto passwordInputDto) throws RecordNotFoundException {
-
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new RecordNotFoundException("There is no user found with username " + username + " in the database!"));
         user.setPassword(passwordEncoder.encode(passwordInputDto.newPassword));
@@ -186,7 +182,6 @@ public class UserService {
         user.setEmail(userInputDto.email);
         user.setDateOfBirth(userInputDto.dateOfBirth);
         user.setPhotoUrl(userInputDto.photoUrl);
-
         return user;
     }
 
@@ -209,7 +204,6 @@ public class UserService {
         if (user.getTrainer() != null) {
             userOutputDto.trainerUsername = user.getTrainer().getUsername();
         }
-
         return userOutputDto;
     }
 

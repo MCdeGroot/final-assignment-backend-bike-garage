@@ -23,8 +23,6 @@ public class BikeController {
         this.bikeService = bikeService;
     }
 
-    //het liefst wil ik hem met id of framenumber; moet ik hier aparte mappings voor maken of kan dit in één?
-    //Of moeten we dit in de frontend regelen?
     @GetMapping("/bike-data/{id}")
     public ResponseEntity<BikeOutputDto> getBikeById(@PathVariable Long id){
         return new ResponseEntity<>(bikeService.getBikeById(id), HttpStatus.OK);
@@ -52,7 +50,6 @@ public class BikeController {
             return ResponseEntity.badRequest().body(sb.toString());
         } else {
             BikeOutputDto bikeOutputDto = bikeService.createBike(bikeInputDto, username);
-            //hiermee creeer je het pad waarin het object wordt opgeslagen. maar snap niet hoe dit werkt!!!!
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + bikeOutputDto).toUriString());
             return ResponseEntity.created(uri).body(bikeOutputDto);
         }
@@ -78,16 +75,5 @@ public class BikeController {
         bikeService.deleteBike(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-//    @GetMapping
-//    public ResponseEntity<Iterable<Bike>> getAllBikes(){
-//        return ResponseEntity.ok(bikeRepository.findAll());
-//    }
-//    @PostMapping
-//    public ResponseEntity<Bike> addBike(@RequestBody Bike bike){
-//        bikeRepository.save(bike);
-//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + bike.getFrameNumber()).toUriString());
-//        return ResponseEntity.created(uri).body(bike);
-//    }
-
 
 }
